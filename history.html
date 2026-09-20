@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meal History</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="app-header">
+      <h1>Meal History</h1>
+      <p class="subtitle">Every meal you have saved, grouped by day.</p>
+      <nav class="app-nav">
+        <a href="index.html" class="nav-link">Builder</a>
+        <a href="history.html" class="nav-link is-active">History</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <!-- Account -->
+      <section class="card auth-bar">
+        <p id="auth-status" class="auth-status">Checking sign-in status…</p>
+        <div class="auth-actions">
+          <button type="button" id="auth-signin" class="btn btn-primary" hidden>
+            Sign in with GitHub
+          </button>
+          <button type="button" id="auth-signout" class="btn btn-ghost" hidden>Sign out</button>
+        </div>
+      </section>
+
+      <!-- Filter -->
+      <section class="card">
+        <h2>Filter</h2>
+        <form id="filter-form" class="save-form" novalidate>
+          <div class="field">
+            <label for="from-date">From</label>
+            <input type="date" id="from-date" name="from" />
+          </div>
+          <div class="field">
+            <label for="to-date">To</label>
+            <input type="date" id="to-date" name="to" />
+          </div>
+          <button type="submit" class="btn btn-primary">Apply</button>
+          <button type="button" id="reset-filter" class="btn btn-ghost">Last 30 days</button>
+        </form>
+      </section>
+
+      <!-- Summary -->
+      <section class="card">
+        <h2>Summary</h2>
+        <ul class="stats">
+          <li class="stat">
+            <span class="stat-label">Meals</span>
+            <span class="stat-value" id="sum-meals">0</span>
+          </li>
+          <li class="stat stat-accent">
+            <span class="stat-label">Total calories</span>
+            <span class="stat-value"><span id="sum-calories">0</span> kcal</span>
+          </li>
+          <li class="stat">
+            <span class="stat-label">Average per day</span>
+            <span class="stat-value"><span id="sum-avg">0</span> kcal</span>
+          </li>
+          <li class="stat">
+            <span class="stat-label">Protein</span>
+            <span class="stat-value"><span id="sum-protein">0</span> g</span>
+          </li>
+          <li class="stat">
+            <span class="stat-label">Carbs</span>
+            <span class="stat-value"><span id="sum-carbs">0</span> g</span>
+          </li>
+          <li class="stat">
+            <span class="stat-label">Fat</span>
+            <span class="stat-value"><span id="sum-fat">0</span> g</span>
+          </li>
+        </ul>
+
+        <h2 class="section-gap">Calories per day</h2>
+        <div class="chart-wrap">
+          <canvas
+            id="chart"
+            width="900"
+            height="260"
+            role="img"
+            aria-label="Line chart of calories per day"
+          ></canvas>
+        </div>
+      </section>
+
+      <!-- Meals -->
+      <section class="card">
+        <h2>Saved meals</h2>
+        <p id="history-status" class="empty-state">Sign in to load your history.</p>
+        <div id="history-days"></div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>History is stored in your Supabase project and is private to your account.</p>
+    </footer>
+
+    <script type="module" src="history.js"></script>
+  </body>
+</html>

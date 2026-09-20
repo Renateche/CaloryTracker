@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calorie &amp; Meal Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="app-header">
+      <h1>Calorie &amp; Meal Calculator</h1>
+      <p class="subtitle">Build a meal from ingredients and get the nutrition breakdown.</p>
+      <nav class="app-nav">
+        <a href="index.html" class="nav-link is-active">Builder</a>
+        <a href="history.html" class="nav-link">History</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <!-- Account -->
+      <section class="card auth-bar">
+        <p id="auth-status" class="auth-status">Checking sign-in status…</p>
+        <div class="auth-actions">
+          <button type="button" id="auth-signin" class="btn btn-primary" hidden>
+            Sign in with GitHub
+          </button>
+          <button type="button" id="auth-signout" class="btn btn-ghost" hidden>Sign out</button>
+        </div>
+      </section>
+      <!-- Ingredient input -->
+      <section class="card">
+        <h2>Add ingredient</h2>
+        <form id="ingredient-form" novalidate>
+          <div class="grid">
+            <div class="field field-wide">
+              <label for="name">Ingredient name</label>
+              <input type="text" id="name" name="name" placeholder="Chicken" required />
+            </div>
+
+            <div class="field">
+              <label for="calories">Calories per 100 g <span class="req">*</span></label>
+              <input
+                type="number"
+                id="calories"
+                name="calories"
+                min="0"
+                step="any"
+                placeholder="165"
+                required
+              />
+            </div>
+
+            <div class="field">
+              <label for="amount">Amount used (g) <span class="req">*</span></label>
+              <input
+                type="number"
+                id="amount"
+                name="amount"
+                min="0.1"
+                step="any"
+                placeholder="200"
+                required
+              />
+            </div>
+
+            <div class="field">
+              <label for="protein">Protein per 100 g</label>
+              <input
+                type="number"
+                id="protein"
+                name="protein"
+                min="0"
+                step="any"
+                placeholder="31"
+              />
+            </div>
+
+            <div class="field">
+              <label for="carbs">Carbs per 100 g</label>
+              <input type="number" id="carbs" name="carbs" min="0" step="any" placeholder="0" />
+            </div>
+
+            <div class="field">
+              <label for="fat">Fat per 100 g</label>
+              <input type="number" id="fat" name="fat" min="0" step="any" placeholder="3.6" />
+            </div>
+          </div>
+
+          <p id="form-error" class="form-error" role="alert" hidden></p>
+
+          <div class="actions">
+            <button type="submit" class="btn btn-primary">Add to meal</button>
+            <button type="reset" class="btn btn-ghost">Reset fields</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Meal builder -->
+      <section class="card">
+        <div class="card-head">
+          <h2>Meal</h2>
+          <button type="button" id="clear-meal" class="btn btn-danger">Clear meal</button>
+        </div>
+
+        <p id="empty-state" class="empty-state">
+          No ingredients yet. Add one above to get started.
+        </p>
+
+        <div class="table-wrap" id="table-wrap" hidden>
+          <table id="meal-table">
+            <thead>
+              <tr>
+                <th scope="col">Ingredient</th>
+                <th scope="col" class="num">Amount (g)</th>
+                <th scope="col" class="num">Calories</th>
+                <th scope="col" class="num">Protein (g)</th>
+                <th scope="col" class="num">Carbs (g)</th>
+                <th scope="col" class="num">Fat (g)</th>
+                <th scope="col"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="meal-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Totals -->
+      <section class="card">
+        <h2>Whole meal</h2>
+        <ul class="stats">
+          <li class="stat">
+            <span class="stat-label">Total weight</span>
+            <span class="stat-value"><span id="total-weight">0</span> g</span>
+          </li>
+          <li class="stat stat-accent">
+            <span class="stat-label">Total calories</span>
+            <span class="stat-value"><span id="total-calories">0</span> kcal</span>
+          </li>
+          <li class="stat">
+            <span class="stat-label">Total protein</span>
+            <span class="stat-value"><span id="total-protein">0</span> g</span>
+          </li>
+          <li class="stat">
+            <span class="stat-label">Total carbs</span>
+            <span class="stat-value"><span id="total-carbs">0</span> g</span>
+          </li>
+          <li class="stat">
+            <span class="stat-label">Total fat</span>
+            <span class="stat-value"><span id="total-fat">0</span> g</span>
+          </li>
+        </ul>
+
+        <h2 class="section-gap">Meal nutrition per 100 g</h2>
+        <ul class="stats">
+          <li class="stat stat-accent">
+            <span class="stat-label">Calories</span>
+            <span class="stat-value"><span id="per100-calories">0</span> kcal</span>
+          </li>
+          <li class="stat">
+            <span class="stat-label">Protein</span>
+            <span class="stat-value"><span id="per100-protein">0</span> g</span>
+          </li>
+          <li class="stat">
+            <span class="stat-label">Carbohydrates</span>
+            <span class="stat-value"><span id="per100-carbs">0</span> g</span>
+          </li>
+          <li class="stat">
+            <span class="stat-label">Fat</span>
+            <span class="stat-value"><span id="per100-fat">0</span> g</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Save to history -->
+      <section class="card">
+        <h2>Save to history</h2>
+        <form id="save-form" class="save-form" novalidate>
+          <div class="field field-grow">
+            <label for="meal-name">Meal name</label>
+            <input type="text" id="meal-name" name="mealName" placeholder="Lunch" />
+          </div>
+          <div class="field">
+            <label for="eaten-at">Eaten at</label>
+            <input type="datetime-local" id="eaten-at" name="eatenAt" />
+          </div>
+          <button type="submit" id="save-meal" class="btn btn-primary">Save meal</button>
+        </form>
+        <p id="save-status" class="status-msg" role="status" hidden></p>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>The meal you are building is kept in this browser; saved meals sync to Supabase.</p>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
