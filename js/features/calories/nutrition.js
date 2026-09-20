@@ -1,37 +1,12 @@
 /**
- * Nutrition maths shared by the meal builder and the history page.
- * Values marked "per 100 g" are what the user types; actual values are derived.
+ * Nutrition maths for the calorie tracker.
+ * Ingredients store values *per 100 g*; actual values are always derived.
  */
 
-/** Parse user input into a non-negative number; accepts both "3.6" and "3,6". */
-export const toNumber = (value, fallback = 0) => {
-  const parsed = Number.parseFloat(String(value).replace(',', '.'));
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : fallback;
-};
-
-/** Round to at most one decimal and drop a trailing ".0". */
-export const format = (value) => (Math.round(value * 10) / 10).toString();
-
-export const createId = () =>
-  `ing_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-
-/** Escape text before inserting it into HTML. */
-export const escapeHtml = (text) =>
-  String(text).replace(
-    /[&<>"']/g,
-    (char) =>
-      ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      })[char]
-  );
+import { createId, toNumber } from '../../lib/format.js';
 
 /**
- * Actual nutrition for one ingredient:
- * actual_value = value_per_100g × (amount / 100)
+ * actual_value = value_per_100g × (amount_in_grams / 100)
  */
 export const calculateIngredient = (ingredient) => {
   const factor = ingredient.amount / 100;
@@ -43,7 +18,6 @@ export const calculateIngredient = (ingredient) => {
   };
 };
 
-/** Sum the actual values of every ingredient plus the total weight. */
 export const calculateTotals = (list) =>
   list.reduce(
     (totals, ingredient) => {
@@ -60,8 +34,7 @@ export const calculateTotals = (list) =>
   );
 
 /**
- * Nutrition per 100 g of the whole meal:
- * (total / total_weight) × 100
+ * meal_value_per_100g = (total_value / total_weight) × 100
  */
 export const calculatePer100g = (totals) => {
   if (totals.weight <= 0) {
@@ -78,7 +51,7 @@ export const calculatePer100g = (totals) => {
 
 /** Normalise an ingredient coming from storage or the database. */
 export const normaliseIngredient = (item) => ({
-  id: typeof item?.id === 'string' ? item.id : createId(),
+  id: typeof item?.id === 'string' ? item.id : createId('ing'),
   name: String(item?.name ?? ''),
   calories: toNumber(item?.calories),
   protein: toNumber(item?.protein),

@@ -1,5 +1,5 @@
 /**
- * Calorie & Meal Calculator — meal builder page.
+ * Calorie tracker — meal builder page.
  *
  * The meal being built lives in localStorage so a refresh never loses work.
  * Finished meals are pushed to Supabase from the "Save to history" form.
@@ -9,24 +9,19 @@ import {
   calculateIngredient,
   calculatePer100g,
   calculateTotals,
-  createId,
-  escapeHtml,
-  format,
-  normaliseIngredient,
-  toNumber
+  normaliseIngredient
 } from './nutrition.js';
-import { initAuthBar } from './auth-bar.js';
-import { saveMeal as saveMealToHistory } from './meals-api.js';
+import { saveMeal as saveMealToHistory } from './api.js';
+import { initShell } from '../../app/shell.js';
+import { confirmAction, escapeHtml, onAction, setStatus } from '../../lib/dom.js';
+import { createId, format, toNumber } from '../../lib/format.js';
+import { draftKey, migrateLegacyKey, readJson, writeJson } from '../../lib/storage.js';
 
-const STORAGE_KEY = 'meal-calculator:ingredients';
+const DRAFT_KEY = draftKey('calories');
+migrateLegacyKey('meal-calculator:ingredients', DRAFT_KEY);
 
-/** @type {Array<{id: string, name: string, calories: number, protein: number, carbs: number, fat: number, amount: number}>} */
 let ingredients = [];
 let currentUser = null;
-
-/* ------------------------------------------------------------------ */
-/* DOM references                                                      */
-/* ------------------------------------------------------------------ */
 
 const form = document.getElementById('ingredient-form');
 const formError = document.getElementById('form-error');
@@ -50,31 +45,6 @@ const output = {
   per100Protein: document.getElementById('per100-protein'),
   per100Carbs: document.getElementById('per100-carbs'),
   per100Fat: document.getElementById('per100-fat')
-};
-
-/* ------------------------------------------------------------------ */
-/* Storage                                                             */
-/* ------------------------------------------------------------------ */
-
-const saveMeal = () => {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(ingredients));
-  } catch {
-    // Storage can be unavailable (private mode / quota) — the app still works.
-  }
-};
-
-const loadMeal = () => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-
-    return parsed.filter((item) => item && typeof item.name === 'string').map(normaliseIngredient);
-  } catch {
-    return [];
-  }
 };
 
 /* ------------------------------------------------------------------ */
@@ -126,32 +96,16 @@ const renderTotals = () => {
   output.per100Fat.textContent = format(per100.fat);
 };
 
-/** Re-render everything and persist the current meal. */
+/** The save button needs both a signed-in user and something to save. */
+const updateSaveState = () => {
+  saveBtn.disabled = !currentUser || ingredients.length === 0;
+};
+
 const render = () => {
   renderTable();
   renderTotals();
   updateSaveState();
-  saveMeal();
-};
-
-const showError = (message) => {
-  formError.textContent = message;
-  formError.hidden = false;
-};
-
-const hideError = () => {
-  formError.hidden = true;
-};
-
-const showSaveStatus = (message, isError = false) => {
-  saveStatus.textContent = message;
-  saveStatus.classList.toggle('is-error', isError);
-  saveStatus.hidden = false;
-};
-
-/** The save button needs both a signed-in user and something to save. */
-const updateSaveState = () => {
-  saveBtn.disabled = !currentUser || ingredients.length === 0;
+  writeJson(DRAFT_KEY, ingredients);
 };
 
 /* ------------------------------------------------------------------ */
@@ -167,22 +121,22 @@ const addIngredient = (event) => {
   const caloriesRaw = String(data.get('calories') || '').trim();
 
   if (!name) {
-    showError('Please enter an ingredient name.');
+    setStatus(formError, 'Please enter an ingredient name.', { error: true });
     return;
   }
   if (caloriesRaw === '') {
-    showError('Please enter the calories per 100 g.');
+    setStatus(formError, 'Please enter the calories per 100 g.', { error: true });
     return;
   }
   if (amount <= 0) {
-    showError('Please enter an amount greater than 0 g.');
+    setStatus(formError, 'Please enter an amount greater than 0 g.', { error: true });
     return;
   }
 
-  hideError();
+  formError.hidden = true;
 
   ingredients.push({
-    id: createId(),
+    id: createId('ing'),
     name,
     calories: toNumber(caloriesRaw),
     protein: toNumber(data.get('protein')),
@@ -194,11 +148,6 @@ const addIngredient = (event) => {
   render();
   form.reset();
   document.getElementById('name').focus();
-};
-
-const removeIngredient = (id) => {
-  ingredients = ingredients.filter((ingredient) => ingredient.id !== id);
-  render();
 };
 
 /**
@@ -219,12 +168,12 @@ const updateAmount = (id, value, row) => {
   cells[5].textContent = format(actual.fat);
 
   renderTotals();
-  saveMeal();
+  writeJson(DRAFT_KEY, ingredients);
 };
 
 const clearMeal = () => {
   if (ingredients.length === 0) return;
-  if (!window.confirm('Remove all ingredients from this meal?')) return;
+  if (!confirmAction('Remove all ingredients from this meal?')) return;
   ingredients = [];
   render();
 };
@@ -234,17 +183,18 @@ const clearMeal = () => {
 /* ------------------------------------------------------------------ */
 
 form.addEventListener('submit', addIngredient);
-form.addEventListener('reset', hideError);
+form.addEventListener('reset', () => {
+  formError.hidden = true;
+});
 clearMealBtn.addEventListener('click', clearMeal);
 
-// Delegated: remove buttons inside the table.
-mealBody.addEventListener('click', (event) => {
-  const button = event.target.closest('button[data-action="remove"]');
-  if (!button) return;
-  removeIngredient(button.closest('tr').dataset.id);
+onAction(mealBody, {
+  remove: ({ id }) => {
+    ingredients = ingredients.filter((ingredient) => ingredient.id !== id);
+    render();
+  }
 });
 
-// Delegated: live editing of ingredient amounts.
 mealBody.addEventListener('input', (event) => {
   const input = event.target.closest('.amount-input');
   if (!input) return;
@@ -258,7 +208,7 @@ saveForm.addEventListener('submit', async (event) => {
   if (saveBtn.disabled) return;
 
   saveBtn.disabled = true;
-  showSaveStatus('Saving…');
+  setStatus(saveStatus, 'Saving…');
 
   try {
     await saveMealToHistory({
@@ -267,10 +217,10 @@ saveForm.addEventListener('submit', async (event) => {
       ingredients,
       totals: calculateTotals(ingredients)
     });
-    showSaveStatus('Saved. Open History to see it.');
+    setStatus(saveStatus, 'Saved. Open History to see it.');
     mealNameInput.value = '';
   } catch (error) {
-    showSaveStatus(`Could not save: ${error.message}`, true);
+    setStatus(saveStatus, `Could not save: ${error.message}`, { error: true });
   } finally {
     updateSaveState();
   }
@@ -280,12 +230,20 @@ saveForm.addEventListener('submit', async (event) => {
 /* Init                                                                */
 /* ------------------------------------------------------------------ */
 
-ingredients = loadMeal();
+ingredients = (readJson(DRAFT_KEY, []) ?? [])
+  .filter((item) => item && typeof item.name === 'string')
+  .map(normaliseIngredient);
+
 renderTable();
 renderTotals();
 updateSaveState();
 
-initAuthBar((user) => {
-  currentUser = user;
-  updateSaveState();
+initShell({
+  title: 'Calorie Tracker',
+  subtitle: 'Build a meal from ingredients and get the nutrition breakdown.',
+  active: 'calories',
+  onUser: (user) => {
+    currentUser = user;
+    updateSaveState();
+  }
 });

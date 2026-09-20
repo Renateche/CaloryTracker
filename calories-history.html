@@ -3,31 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meal History</title>
+    <title>Calorie History</title>
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <header class="app-header">
-      <h1>Meal History</h1>
-      <p class="subtitle">Every meal you have saved, grouped by day.</p>
-      <nav class="app-nav">
-        <a href="index.html" class="nav-link">Builder</a>
-        <a href="history.html" class="nav-link is-active">History</a>
-      </nav>
-    </header>
+    <header class="app-header"></header>
 
     <main class="container">
-      <!-- Account -->
-      <section class="card auth-bar">
-        <p id="auth-status" class="auth-status">Checking sign-in status…</p>
-        <div class="auth-actions">
-          <button type="button" id="auth-signin" class="btn btn-primary" hidden>
-            Sign in with GitHub
-          </button>
-          <button type="button" id="auth-signout" class="btn btn-ghost" hidden>Sign out</button>
-        </div>
-      </section>
+      <nav class="segmented" aria-label="Calorie views">
+        <a href="calories.html" class="segment">Builder</a>
+        <a href="calories-history.html" class="segment is-active">History</a>
+      </nav>
 
       <!-- Filter -->
       <section class="card">
@@ -80,6 +67,7 @@
         <div class="chart-wrap">
           <canvas
             id="chart"
+            class="chart"
             width="900"
             height="260"
             role="img"
@@ -100,6 +88,6 @@
       <p>History is stored in your Supabase project and is private to your account.</p>
     </footer>
 
-    <script type="module" src="history.js"></script>
+    <script type="module" src="js/features/calories/history.js"></script>
   </body>
 </html>

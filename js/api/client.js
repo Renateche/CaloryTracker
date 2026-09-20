@@ -1,11 +1,11 @@
 /**
  * Supabase client + GitHub OAuth helpers.
  *
- * The client is created lazily so the app still loads (offline / unconfigured)
- * when the CDN module or the credentials are unavailable.
+ * The client is created lazily so the app still loads when the CDN module or
+ * the credentials are unavailable.
  */
 
-import { SUPABASE_URL, SUPABASE_ANON_KEY, isConfigured } from './config.js';
+import { SUPABASE_URL, SUPABASE_ANON_KEY, isConfigured } from '../../config.js';
 
 let clientPromise = null;
 
