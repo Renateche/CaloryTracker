@@ -4,15 +4,18 @@
  */
 
 import { isConfigured } from '../../config.js';
-import { onAuthChange, signIn, signOut } from '../api/client.js';
+import { onAuthChange, signIn, signInWithGoogle, signOut } from '../api/client.js';
 import { escapeHtml } from '../lib/dom.js';
 
 export const AUTH_BAR_MARKUP = `
   <section class="card auth-bar">
     <p id="auth-status" class="auth-status">Checking sign-in status…</p>
     <div class="auth-actions">
-      <button type="button" id="auth-signin" class="btn btn-primary" hidden>
+      <button type="button" id="auth-signin-github" class="btn btn-primary" hidden>
         Sign in with GitHub
+      </button>
+      <button type="button" id="auth-signin-google" class="btn btn-ghost" hidden>
+        Sign in with Google
       </button>
       <button type="button" id="auth-signout" class="btn btn-ghost" hidden>Sign out</button>
     </div>
@@ -23,27 +26,38 @@ export const AUTH_BAR_MARKUP = `
  */
 export const initAuthBar = async (onUserChange = () => {}) => {
   const status = document.getElementById('auth-status');
-  const signInBtn = document.getElementById('auth-signin');
+  const signInButtons = [
+    { element: document.getElementById('auth-signin-github'), signIn: () => signIn() },
+    { element: document.getElementById('auth-signin-google'), signIn: signInWithGoogle }
+  ];
   const signOutBtn = document.getElementById('auth-signout');
   if (!status) return;
 
   if (!isConfigured) {
     status.textContent =
       'Supabase is not configured — add your project URL and anon key to config.js.';
-    signInBtn.hidden = true;
+    signInButtons.forEach(({ element }) => {
+      element.hidden = true;
+    });
     signOutBtn.hidden = true;
     onUserChange(null);
     return;
   }
 
-  signInBtn.addEventListener('click', async () => {
-    signInBtn.disabled = true;
-    try {
-      await signIn();
-    } catch (error) {
-      status.textContent = `Sign-in failed: ${error.message}`;
-      signInBtn.disabled = false;
-    }
+  signInButtons.forEach(({ element, signIn: startSignIn }) => {
+    element.addEventListener('click', async () => {
+      signInButtons.forEach(({ element: button }) => {
+        button.disabled = true;
+      });
+      try {
+        await startSignIn();
+      } catch (error) {
+        status.textContent = `Sign-in failed: ${error.message}`;
+        signInButtons.forEach(({ element: button }) => {
+          button.disabled = false;
+        });
+      }
+    });
   });
 
   signOutBtn.addEventListener('click', () => signOut());
@@ -53,8 +67,10 @@ export const initAuthBar = async (onUserChange = () => {}) => {
     status.innerHTML = user
       ? `Signed in as <strong>${escapeHtml(label)}</strong>`
       : 'Sign in to save and sync your data across devices.';
-    signInBtn.hidden = Boolean(user);
-    signInBtn.disabled = false;
+    signInButtons.forEach(({ element }) => {
+      element.hidden = Boolean(user);
+      element.disabled = false;
+    });
     signOutBtn.hidden = !user;
     onUserChange(user);
   });

@@ -225,7 +225,7 @@ Steps 1–3 are enough to make the tracker appear on the dashboard with live dat
 
 ---
 
-## How GitHub and Supabase connect
+## How OAuth providers and Supabase connect
 
 Three separate systems are involved. They are wired together by URLs, and every URL
 has to match or authentication breaks.
@@ -235,12 +235,12 @@ sequenceDiagram
     participant U as User
     participant P as GitHub Pages<br/>(static files)
     participant S as Supabase<br/>(auth + database)
-    participant G as GitHub OAuth
+   participant G as GitHub or Google OAuth
 
     U->>P: Load site
     P-->>U: HTML/CSS/JS
-    U->>S: Click "Sign in with GitHub"
-    S->>G: Redirect to GitHub authorize
+   U->>S: Click "Sign in with GitHub" or "Sign in with Google"
+   S->>G: Redirect to the selected provider
     G-->>U: Consent screen
     U->>G: Approve
     G->>S: Callback with code
@@ -251,25 +251,25 @@ sequenceDiagram
     S-->>P: Only this user's meals
 ```
 
-### The three roles
+### The roles
 
-| System                          | Responsibility                                                                |
-| ------------------------------- | ----------------------------------------------------------------------------- |
-| **GitHub (repository + Pages)** | Stores the source and serves the static files. Knows nothing about your data. |
-| **GitHub (OAuth App)**          | Identity provider. Confirms who you are; never sees your meals.               |
-| **Supabase**                    | Handles the OAuth exchange, issues sessions, stores meals, enforces RLS.      |
+| System                           | Responsibility                                                                |
+| -------------------------------- | ----------------------------------------------------------------------------- |
+| **GitHub (repository + Pages)**  | Stores the source and serves the static files. Knows nothing about your data. |
+| **GitHub or Google (OAuth App)** | Identity provider. Confirms who you are; never sees your meals.               |
+| **Supabase**                     | Handles the OAuth exchange, issues sessions, stores meals, enforces RLS.      |
 
 ### The URLs that must line up
 
-| Setting                    | Where                                          | Value                                                                     |
-| -------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------- |
-| Authorization callback URL | GitHub OAuth App                               | `https://lxdepwhjjuwdtawzzzrm.supabase.co/auth/v1/callback`               |
-| Homepage URL               | GitHub OAuth App                               | `https://renateche.github.io/CaloryTracker/`                              |
-| Client ID + Secret         | Supabase → Auth → Sign In / Providers → GitHub | from the OAuth App                                                        |
-| Site URL                   | Supabase → Auth → URL Configuration            | `https://renateche.github.io/CaloryTracker/`                              |
-| Redirect URLs              | Supabase → Auth → URL Configuration            | `https://renateche.github.io/CaloryTracker/**`<br>`http://localhost:*/**` |
-| `SUPABASE_URL`             | `config.js`                                    | `https://lxdepwhjjuwdtawzzzrm.supabase.co`                                |
-| `SUPABASE_ANON_KEY`        | `config.js`                                    | the publishable key                                                       |
+| Setting                    | Where                                 | Value                                                                     |
+| -------------------------- | ------------------------------------- | ------------------------------------------------------------------------- |
+| Authorization callback URL | GitHub or Google OAuth App            | `https://lxdepwhjjuwdtawzzzrm.supabase.co/auth/v1/callback`               |
+| Homepage URL               | GitHub OAuth App                      | `https://renateche.github.io/CaloryTracker/`                              |
+| Client ID + Secret         | Supabase → Auth → Sign In / Providers | from the selected OAuth App                                               |
+| Site URL                   | Supabase → Auth → URL Configuration   | `https://renateche.github.io/CaloryTracker/`                              |
+| Redirect URLs              | Supabase → Auth → URL Configuration   | `https://renateche.github.io/CaloryTracker/**`<br>`http://localhost:*/**` |
+| `SUPABASE_URL`             | `config.js`                           | `https://lxdepwhjjuwdtawzzzrm.supabase.co`                                |
+| `SUPABASE_ANON_KEY`        | `config.js`                           | the publishable key                                                       |
 
 Note the callback points at **Supabase**, not at the app. GitHub hands the
 authorization code to Supabase, Supabase exchanges it for a session, and only then
@@ -336,13 +336,19 @@ For a fresh clone pointing at your own Supabase project:
    safe to re-run. Confirm each table then shows 4 RLS policies.
 2. **GitHub OAuth App** — github.com → Settings → Developer settings → OAuth Apps → New.
    Callback URL must be `https://<your-project-ref>.supabase.co/auth/v1/callback`.
-3. **Enable the provider** — Supabase → Authentication → Sign In / Providers → GitHub.
-   Paste the Client ID and Secret, enable, save.
-4. **URL configuration** — Supabase → Authentication → URL Configuration. Set the Site
+3. **Google OAuth client (optional)** — Google Cloud → Google Auth Platform → Clients.
+   Create a **Web application** client. Add your app origins, such as
+   `https://renateche.github.io` and `http://localhost:4173`, as authorized JavaScript
+   origins. Add `https://<your-project-ref>.supabase.co/auth/v1/callback` as an
+   authorized redirect URI. Configure the consent screen with `openid`, `email`, and
+   `profile` scopes, then keep the Client Secret private.
+4. **Enable the providers** — Supabase → Authentication → Sign In / Providers.
+   Enable GitHub and/or Google, then paste each provider's Client ID and Secret.
+5. **URL configuration** — Supabase → Authentication → URL Configuration. Set the Site
    URL and add both redirect URL patterns.
-5. **`config.js`** — replace `SUPABASE_URL` and `SUPABASE_ANON_KEY` with your project's
+6. **`config.js`** — replace `SUPABASE_URL` and `SUPABASE_ANON_KEY` with your project's
    values from Project Settings → API.
-6. **Pages** — repo → Settings → Pages → Deploy from a branch → `main` → `/ (root)`.
+7. **Pages** — repo → Settings → Pages → Deploy from a branch → `main` → `/ (root)`.
 
 Until step 5 is done the app still runs; the auth bar simply reports that Supabase is
 not configured and the save button stays disabled.

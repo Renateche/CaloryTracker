@@ -1,5 +1,5 @@
 /**
- * Supabase client + GitHub OAuth helpers.
+ * Supabase client + OAuth helpers.
  *
  * The client is created lazily so the app still loads when the CDN module or
  * the credentials are unavailable.
@@ -30,18 +30,20 @@ export const getUser = async () => {
   return data?.user ?? null;
 };
 
-export const signIn = async () => {
+export const signIn = async (provider = 'github') => {
   const supabase = await getClient();
   if (!supabase) throw new Error('Supabase is not configured.');
 
   // Strip query/hash so the OAuth callback lands on a clean URL.
   const redirectTo = `${window.location.origin}${window.location.pathname}`;
   const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'github',
+    provider,
     options: { redirectTo }
   });
   if (error) throw error;
 };
+
+export const signInWithGoogle = () => signIn('google');
 
 export const signOut = async () => {
   const supabase = await getClient();
