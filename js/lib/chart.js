@@ -25,10 +25,11 @@ export const drawLineChart = (canvas, points) => {
   const primary = cssVar('--primary', '#2f6df6');
   const border = cssVar('--border', '#e2e7f0');
   const muted = cssVar('--muted', '#64708a');
+  const font = cssVar('--chart-font', 'system-ui, sans-serif');
 
   ctx.strokeStyle = border;
   ctx.fillStyle = muted;
-  ctx.font = '12px system-ui, sans-serif';
+  ctx.font = `12px ${font}`;
   ctx.lineWidth = 1;
   for (let i = 0; i <= 4; i += 1) {
     const value = (max / 4) * i;

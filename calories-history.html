@@ -7,17 +7,28 @@
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body>
+  <body class="calorie-history-page">
     <header class="app-header"></header>
 
     <main class="container">
       <nav class="segmented" aria-label="Calorie views">
         <a href="calories.html" class="segment">Builder</a>
         <a href="calories-history.html" class="segment is-active">History</a>
+        <span class="park-diary-banner" aria-hidden="true">
+          <span class="park-diary-cloud park-diary-cloud-left"></span>
+          <span class="park-diary-cloud park-diary-cloud-right"></span>
+          <span class="park-diary-skyline"></span>
+          <span class="park-diary-tree park-diary-tree-left"></span>
+          <span class="park-diary-tree park-diary-tree-right"></span>
+          <span class="park-diary-fountain"></span>
+          <span class="park-diary-sparkle park-diary-sparkle-one"></span>
+          <span class="park-diary-sparkle park-diary-sparkle-two"></span>
+          <span class="park-diary-ground"></span>
+        </span>
       </nav>
 
       <!-- Filter -->
-      <section class="card">
+      <section class="card filter-panel">
         <h2>Filter</h2>
         <form id="filter-form" class="save-form" novalidate>
           <div class="field">
@@ -34,36 +45,30 @@
       </section>
 
       <!-- Summary -->
-      <section class="card">
+      <section class="card summary-panel">
         <h2>Summary</h2>
         <ul class="stats">
-          <li class="stat">
-            <span class="stat-label">Meals</span>
-            <span class="stat-value" id="sum-meals">0</span>
-          </li>
-          <li class="stat stat-accent">
+          <li class="stat stat-accent stat-calories">
             <span class="stat-label">Total calories</span>
             <span class="stat-value"><span id="sum-calories">0</span> kcal</span>
           </li>
-          <li class="stat">
-            <span class="stat-label">Average per day</span>
-            <span class="stat-value"><span id="sum-avg">0</span> kcal</span>
-          </li>
-          <li class="stat">
+          <li class="stat stat-protein">
             <span class="stat-label">Protein</span>
             <span class="stat-value"><span id="sum-protein">0</span> g</span>
           </li>
-          <li class="stat">
+          <li class="stat stat-carbs">
             <span class="stat-label">Carbs</span>
             <span class="stat-value"><span id="sum-carbs">0</span> g</span>
           </li>
-          <li class="stat">
+          <li class="stat stat-fat">
             <span class="stat-label">Fat</span>
             <span class="stat-value"><span id="sum-fat">0</span> g</span>
           </li>
         </ul>
+      </section>
 
-        <h2 class="section-gap">Calories per day</h2>
+      <section class="card chart-panel">
+        <h2>Calories per day</h2>
         <div class="chart-wrap">
           <canvas
             id="chart"
@@ -76,8 +81,61 @@
         </div>
       </section>
 
+      <section class="card insight-panel rhythm-panel">
+        <h2>Meal rhythm</h2>
+        <dl class="insight-list">
+          <div>
+            <dt>Busiest time</dt>
+            <dd id="rhythm-busiest">No meals yet</dd>
+          </div>
+          <div>
+            <dt>First meal</dt>
+            <dd id="rhythm-first">--:--</dd>
+          </div>
+          <div>
+            <dt>Last meal</dt>
+            <dd id="rhythm-last">--:--</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="card insight-panel consistency-panel">
+        <h2>Daily consistency</h2>
+        <dl class="insight-list">
+          <div>
+            <dt>Daily average</dt>
+            <dd id="consistency-average">0 kcal</dd>
+          </div>
+          <div>
+            <dt>Highest day</dt>
+            <dd id="consistency-high">0 kcal</dd>
+          </div>
+          <div>
+            <dt>Lowest day</dt>
+            <dd id="consistency-low">0 kcal</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="card insight-panel macro-panel">
+        <h2>Macro balance</h2>
+        <div class="macro-bars" aria-label="Macro calorie distribution">
+          <div><span>Protein</span><b id="macro-protein">0%</b><i id="macro-protein-bar"></i></div>
+          <div><span>Carbs</span><b id="macro-carbs">0%</b><i id="macro-carbs-bar"></i></div>
+          <div><span>Fat</span><b id="macro-fat">0%</b><i id="macro-fat-bar"></i></div>
+        </div>
+        <p class="insight-note"><strong id="protein-density">0 g</strong> protein per 100 kcal</p>
+      </section>
+
+      <section class="card insight-panel favorites-panel">
+        <h2>Ingredient favorites</h2>
+        <ol id="ingredient-favorites" class="favorites-list">
+          <li>No ingredients in this range.</li>
+        </ol>
+      </section>
+
       <!-- Meals -->
-      <section class="card">
+      <section class="card history-panel">
         <h2>Saved meals</h2>
         <p id="history-status" class="empty-state">Sign in to load your history.</p>
         <div id="history-days"></div>

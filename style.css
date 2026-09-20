@@ -667,3 +667,1161 @@ code {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Calorie History: retro diary ---------- */
+.calorie-history-page {
+  --history-ink: #4c2350;
+  --history-muted: #7d557d;
+  --history-pink: #ee5fa4;
+  --history-pink-deep: #bd3678;
+  --history-pink-soft: #ffe1ef;
+  --history-blue: #72bde6;
+  --history-blue-soft: #dff4ff;
+  --history-lilac: #c7adf1;
+  --history-lilac-soft: #f0e9ff;
+  --history-cream: #fff9ed;
+  --history-line: #dcaed0;
+  --history-shadow: 4px 4px 0 rgba(113, 59, 113, 0.16);
+  --chart-font: Verdana, Geneva, sans-serif;
+  --bg: #f9eaf3;
+  --surface: var(--history-cream);
+  --text: var(--history-ink);
+  --muted: var(--history-muted);
+  --border: var(--history-line);
+  --primary: var(--history-pink);
+  --primary-dark: var(--history-pink-deep);
+  --accent-bg: var(--history-pink-soft);
+  --shadow: var(--history-shadow);
+  --radius: 4px;
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-color: #5d2f66;
+  background-image:
+    radial-gradient(ellipse at 8% 30%, rgba(245, 145, 195, 0.42), transparent 34%),
+    radial-gradient(ellipse at 90% 12%, rgba(135, 103, 202, 0.48), transparent 35%),
+    linear-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+    linear-gradient(155deg, #592c62 0%, #8d477f 42%, #c15f8c 68%, #4d7b78 100%);
+  background-size:
+    auto,
+    auto,
+    18px 18px,
+    18px 18px,
+    auto;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.calorie-history-page .app-header {
+  position: relative;
+  overflow: hidden;
+  min-height: 122px;
+  padding: 0.55rem max(6rem, calc(50% - 440px)) 0.55rem max(10.5rem, calc(50% - 440px));
+  border-top: 3px solid #ffd3e5;
+  border-bottom: 4px solid #8f2e68;
+  background:
+    linear-gradient(180deg, rgba(255, 182, 211, 0.35), transparent 55%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 7px),
+    linear-gradient(180deg, #f477af, #d94a8c);
+  box-shadow: inset 0 -3px 0 rgba(129, 33, 86, 0.34);
+}
+
+.calorie-history-page .app-header .auth-bar {
+  position: absolute;
+  z-index: 3;
+  top: 0.6rem;
+  right: max(0.8rem, calc(50% - 620px));
+  display: flex;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.calorie-history-page .app-header .auth-status {
+  display: none;
+}
+
+.calorie-history-page .app-header .auth-actions {
+  gap: 0.3rem;
+}
+
+.calorie-history-page .app-header .auth-actions .btn {
+  padding: 0.45rem 0.6rem;
+  border-color: #8d2d61;
+  box-shadow:
+    1px 2px 0 #8d2d61,
+    inset 1px 1px 0 #fff5fa;
+  font-size: 0.58rem;
+}
+
+.calorie-history-page .app-header::before,
+.calorie-history-page .app-header::after {
+  position: absolute;
+  color: var(--history-pink);
+  font-family: Georgia, serif;
+  font-size: 2.2rem;
+  line-height: 1;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+.calorie-history-page .app-header::before {
+  content: '✦';
+  top: 1rem;
+  left: max(1rem, calc(50% - 420px));
+}
+
+.calorie-history-page .app-header::after {
+  content: '♡';
+  right: max(1rem, calc(50% - 420px));
+  bottom: 0.8rem;
+}
+
+.calorie-history-page .app-header h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #fff;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-style: italic;
+  letter-spacing: 0;
+  text-shadow:
+    1px 1px 0 #8b285d,
+    3px 3px 0 rgba(122, 31, 78, 0.36);
+}
+
+.calorie-history-page .subtitle {
+  position: relative;
+  z-index: 1;
+  margin: 0.2rem 0 0;
+  color: #fff0f8;
+  font-size: 0.68rem;
+  text-shadow: 1px 1px 0 #a12d68;
+}
+
+.calorie-history-page .app-nav {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(47px, 1fr));
+  gap: 0.25rem;
+  margin-top: 0.45rem;
+}
+
+.calorie-history-page .nav-link,
+.calorie-history-page .segment {
+  border: 2px solid var(--history-ink);
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 2px 2px 0 var(--history-ink);
+  color: var(--history-ink);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.12s ease;
+}
+
+.calorie-history-page .app-nav .nav-link {
+  display: grid;
+  min-height: 57px;
+  padding: 0.2rem 0.1rem 0.25rem;
+  place-items: center;
+  border: 2px solid #8d2d61;
+  border-radius: 4px;
+  background: linear-gradient(#ffd2e4, #f89ac0);
+  box-shadow:
+    1px 2px 0 #8d2d61,
+    inset 1px 1px 0 #fff5fa;
+  color: #702651;
+  text-align: center;
+}
+
+.calorie-history-page .app-nav .nav-link:hover {
+  background: linear-gradient(#fff0f7, #ffc1dc);
+}
+
+.calorie-history-page .app-nav .nav-link.is-active {
+  border-color: #fff0f7;
+  background: linear-gradient(#a84985, #7d2e67);
+  box-shadow:
+    1px 2px 0 #69204f,
+    inset 1px 1px 0 #d98bbe;
+  color: #fff;
+}
+
+.calorie-history-page .nav-icon {
+  display: grid;
+  width: 25px;
+  height: 25px;
+  place-items: center;
+  border: 1px solid rgba(119, 35, 79, 0.35);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.35);
+  color: #7b2658;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.18rem;
+  line-height: 1;
+}
+
+.calorie-history-page .nav-link.is-active .nav-icon {
+  border-color: rgba(255, 231, 244, 0.45);
+  background: rgba(255, 205, 229, 0.17);
+  color: #ffe5f3;
+}
+
+.calorie-history-page .nav-icon::before {
+  content: '✦';
+}
+
+.calorie-history-page .nav-link[data-tracker='dashboard'] .nav-icon::before {
+  content: '⌂';
+}
+.calorie-history-page .nav-link[data-tracker='calories'] .nav-icon::before {
+  content: '♡';
+}
+.calorie-history-page .nav-link[data-tracker='habits'] .nav-icon::before {
+  content: '✓';
+}
+.calorie-history-page .nav-link[data-tracker='health'] .nav-icon::before {
+  content: '+';
+}
+.calorie-history-page .nav-link[data-tracker='exercise'] .nav-icon::before {
+  content: '☼';
+}
+.calorie-history-page .nav-link[data-tracker='sleep'] .nav-icon::before {
+  content: '☾';
+}
+.calorie-history-page .nav-link[data-tracker='water'] .nav-icon::before {
+  content: '≈';
+}
+.calorie-history-page .nav-link[data-tracker='mood'] .nav-icon::before {
+  content: '☻';
+}
+
+.calorie-history-page .nav-label {
+  display: block;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.calorie-history-page .nav-link:hover,
+.calorie-history-page .segment:hover {
+  background: var(--history-blue-soft);
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--history-ink);
+}
+
+.calorie-history-page .nav-link.is-active,
+.calorie-history-page .segment.is-active {
+  border-color: var(--history-pink-deep);
+  background: var(--history-pink);
+  box-shadow: 2px 2px 0 var(--history-pink-deep);
+  color: #fff;
+}
+
+.calorie-history-page .container {
+  max-width: 940px;
+  gap: 1.5rem;
+  padding: 1.75rem 1rem;
+}
+
+.calorie-history-page .segmented {
+  position: relative;
+  display: flex;
+  min-height: 145px;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.55rem;
+  overflow: hidden;
+  padding: 1rem;
+  border: 2px solid var(--history-ink);
+  border-radius: 5px;
+  background: #d885bd;
+  box-shadow: var(--history-shadow);
+}
+
+.calorie-history-page .segmented .segment {
+  position: relative;
+  z-index: 5;
+}
+
+.calorie-history-page .park-diary-banner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 20% 28%, rgba(255, 230, 244, 0.85) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 18%, rgba(255, 239, 167, 0.9) 0 2px, transparent 3px),
+    linear-gradient(180deg, #a869a7 0%, #d885bd 49%, #f3bed6 50%, #f3bed6 100%);
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.calorie-history-page .park-diary-banner::before {
+  content: 'little wellness park';
+  position: absolute;
+  z-index: 3;
+  top: 11px;
+  left: 50%;
+  padding: 0.35rem 0.9rem;
+  border: 2px solid #792e61;
+  border-radius: 999px;
+  background: linear-gradient(#ffaccf, #e65d9e);
+  box-shadow: 2px 2px 0 #792e61;
+  color: #fff;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.92rem;
+  font-style: italic;
+  font-weight: 700;
+  text-shadow: 1px 1px 0 #8b2c61;
+  transform: translateX(-50%);
+}
+
+.calorie-history-page .park-diary-banner::after {
+  content: '✦  ♡  ✦';
+  position: absolute;
+  z-index: 4;
+  right: 14px;
+  bottom: 7px;
+  color: #fff0a8;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-shadow: 1px 1px 0 #a63b78;
+}
+
+.calorie-history-page .park-diary-cloud {
+  position: absolute;
+  z-index: 1;
+  width: 58px;
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(255, 225, 241, 0.8);
+}
+
+.calorie-history-page .park-diary-cloud::before,
+.calorie-history-page .park-diary-cloud::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.calorie-history-page .park-diary-cloud::before {
+  width: 23px;
+  height: 23px;
+  left: 11px;
+}
+
+.calorie-history-page .park-diary-cloud::after {
+  width: 17px;
+  height: 17px;
+  right: 9px;
+}
+
+.calorie-history-page .park-diary-cloud-left {
+  top: 30px;
+  left: 10%;
+}
+
+.calorie-history-page .park-diary-cloud-right {
+  top: 45px;
+  right: 12%;
+  transform: scale(0.72);
+}
+
+.calorie-history-page .park-diary-skyline {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: 43px;
+  left: 0;
+  height: 34px;
+  opacity: 0.75;
+  background:
+    linear-gradient(#67365f, #67365f) 4% 15px / 24px 19px,
+    linear-gradient(#67365f, #67365f) 10% 7px / 14px 27px,
+    linear-gradient(#67365f, #67365f) 17% 20px / 31px 14px,
+    linear-gradient(#67365f, #67365f) 73% 18px / 26px 16px,
+    linear-gradient(#67365f, #67365f) 80% 5px / 20px 29px,
+    linear-gradient(#67365f, #67365f) 88% 12px / 34px 22px;
+  background-repeat: no-repeat;
+}
+
+.calorie-history-page .park-diary-tree {
+  position: absolute;
+  z-index: 2;
+  bottom: 29px;
+  width: 72px;
+  height: 72px;
+  border: 4px solid #6f3652;
+  border-radius: 48% 52% 45% 55%;
+  background:
+    radial-gradient(circle at 30% 28%, #ffd2e6 0 4px, transparent 5px),
+    radial-gradient(circle at 66% 22%, #ffb5d4 0 4px, transparent 5px),
+    radial-gradient(circle at 48% 58%, #f47bad 0 4px, transparent 5px), #c64e83;
+  box-shadow: inset -7px -8px 0 rgba(134, 39, 94, 0.28);
+}
+
+.calorie-history-page .park-diary-tree::after {
+  content: '';
+  position: absolute;
+  top: 62px;
+  left: 31px;
+  width: 11px;
+  height: 36px;
+  border: 3px solid #6f3652;
+  border-top: 0;
+  background: #8e5947;
+}
+
+.calorie-history-page .park-diary-tree-left {
+  left: 7%;
+}
+
+.calorie-history-page .park-diary-tree-right {
+  right: 8%;
+  transform: scale(0.82);
+  transform-origin: bottom center;
+}
+
+.calorie-history-page .park-diary-ground {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 47px;
+  border-top: 3px solid #744463;
+  background:
+    radial-gradient(circle, #f5ca58 0 2px, transparent 3px) 10px 8px / 28px 18px,
+    radial-gradient(circle, #f9a4bf 0 2px, transparent 3px) 2px 3px / 27px 20px,
+    linear-gradient(#4c866c, #2d6d59);
+}
+
+.calorie-history-page .park-diary-fountain {
+  position: absolute;
+  z-index: 4;
+  bottom: 18px;
+  left: 50%;
+  width: 72px;
+  height: 24px;
+  border: 3px solid #59415e;
+  border-radius: 50%;
+  background: #78cceb;
+  box-shadow: inset 0 -7px 0 #4794c7;
+  transform: translateX(-50%);
+}
+
+.calorie-history-page .park-diary-fountain::before {
+  content: '';
+  position: absolute;
+  bottom: 18px;
+  left: 27px;
+  width: 12px;
+  height: 39px;
+  border: 3px solid #59415e;
+  border-bottom: 0;
+  border-radius: 55% 55% 0 0;
+  background: #92e5fb;
+}
+
+.calorie-history-page .park-diary-sparkle {
+  position: absolute;
+  z-index: 4;
+  width: 15px;
+  height: 15px;
+  background: #fff1a6;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  filter: drop-shadow(1px 1px 0 #a23f78);
+}
+
+.calorie-history-page .park-diary-sparkle-one {
+  top: 20px;
+  left: 28%;
+}
+
+.calorie-history-page .park-diary-sparkle-two {
+  top: 50px;
+  right: 29%;
+  transform: scale(0.65);
+}
+
+.calorie-history-page .auth-bar,
+.calorie-history-page .card {
+  border: 2px solid var(--history-ink);
+  border-radius: 4px;
+  box-shadow: var(--history-shadow);
+}
+
+.calorie-history-page .auth-bar {
+  padding: 0.7rem 0.85rem;
+  background: var(--history-blue-soft);
+}
+
+.calorie-history-page .card {
+  position: relative;
+  overflow: hidden;
+  padding: 1.4rem;
+  background: var(--history-cream);
+}
+
+.calorie-history-page .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--history-pink) 0 12px,
+    var(--history-lilac) 12px 24px,
+    var(--history-blue) 24px 36px
+  );
+}
+
+.calorie-history-page .card h2 {
+  position: relative;
+  margin-bottom: 1.15rem;
+  color: var(--history-pink-deep);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.45rem;
+  font-style: italic;
+}
+
+.calorie-history-page .segmented {
+  padding: 0.35rem;
+  border: 2px solid var(--history-ink);
+  border-radius: 4px;
+  background: var(--history-lilac-soft);
+  box-shadow: 3px 3px 0 rgba(77, 35, 80, 0.18);
+}
+
+.calorie-history-page label,
+.calorie-history-page .stat-label {
+  color: var(--history-ink);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.calorie-history-page input[type='date'] {
+  border: 2px inset #f4c4db;
+  border-radius: 2px;
+  background: #fff;
+  color: var(--history-ink);
+  font-size: 0.9rem;
+}
+
+.calorie-history-page input:focus-visible,
+.calorie-history-page button:focus-visible,
+.calorie-history-page a:focus-visible {
+  outline: 3px solid var(--history-blue);
+  outline-offset: 3px;
+}
+
+.calorie-history-page .btn {
+  border: 2px solid var(--history-ink);
+  border-radius: 3px;
+  box-shadow: 2px 2px 0 var(--history-ink);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.12s ease;
+}
+
+.calorie-history-page .btn:hover:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--history-ink);
+}
+
+.calorie-history-page .btn-primary {
+  background: linear-gradient(#fa9dcc, var(--history-pink));
+  color: #fff;
+}
+
+.calorie-history-page .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(#ffb4da, var(--history-pink-deep));
+}
+
+.calorie-history-page .btn-ghost {
+  background: var(--history-blue-soft);
+  color: var(--history-ink);
+}
+
+.calorie-history-page .btn-icon {
+  border-width: 1px;
+  box-shadow: none;
+  color: var(--history-pink-deep);
+  font-size: 0.68rem;
+}
+
+.calorie-history-page .btn-icon-neutral {
+  color: #346789;
+}
+
+.calorie-history-page .stats {
+  gap: 0.8rem;
+}
+
+.calorie-history-page .stat {
+  position: relative;
+  min-height: 88px;
+  overflow: hidden;
+  padding-right: 3.5rem;
+  border: 2px solid #d7b9e4;
+  border-radius: 3px;
+  background: var(--history-lilac-soft);
+  box-shadow: 2px 2px 0 rgba(117, 77, 125, 0.14);
+}
+
+.calorie-history-page .stat:nth-child(2n) {
+  border-color: #9fcde6;
+  background: var(--history-blue-soft);
+}
+
+.calorie-history-page .stat-accent {
+  border-color: var(--history-pink-deep) !important;
+  background: var(--history-pink-soft) !important;
+}
+
+.calorie-history-page .stat-value {
+  color: var(--history-pink-deep);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.6rem;
+}
+
+.calorie-history-page .stat::after {
+  position: absolute;
+  right: 0.65rem;
+  bottom: 0.55rem;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 2px solid rgba(76, 35, 80, 0.72);
+  border-radius: 50%;
+  background: #fff4a9;
+  box-shadow: 1px 1px 0 rgba(76, 35, 80, 0.55);
+  color: #7c416a;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.calorie-history-page .stat-meals::after {
+  content: '♡';
+}
+
+.calorie-history-page .stat-calories::after {
+  content: '✦';
+  color: #c44880;
+}
+
+.calorie-history-page .stat-average::after {
+  content: '☼';
+  color: #bd832d;
+}
+
+.calorie-history-page .stat-protein::after {
+  content: '✿';
+  color: #b44674;
+}
+
+.calorie-history-page .stat-carbs::after {
+  content: '●';
+  color: #6eab70;
+}
+
+.calorie-history-page .stat-fat::after {
+  content: '✧';
+  color: #557eb3;
+}
+
+.calorie-history-page .chart-wrap {
+  border: 2px inset #f0bfd8;
+  border-radius: 3px;
+  background: #fffdfd;
+}
+
+.calorie-history-page .chart,
+.calorie-history-page #chart {
+  display: block;
+}
+
+.calorie-history-page .empty-state,
+.calorie-history-page .status-msg {
+  border: 2px dashed var(--history-line);
+  border-radius: 3px;
+  background: var(--history-pink-soft);
+  color: var(--history-ink);
+}
+
+.calorie-history-page .day-block + .day-block {
+  margin-top: 1.8rem;
+  padding-top: 1.35rem;
+  border-top: 2px dotted var(--history-line);
+}
+
+.calorie-history-page .day-head h3 {
+  color: var(--history-pink-deep);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+.calorie-history-page .day-total {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #b9d5e4;
+  border-radius: 999px;
+  background: var(--history-blue-soft);
+  color: var(--history-ink);
+}
+
+.calorie-history-page table {
+  border: 2px solid #ddbdd3;
+  background: #fff;
+}
+
+.calorie-history-page th {
+  border-bottom: 2px solid #d898bd;
+  background: var(--history-pink-soft);
+  color: var(--history-pink-deep);
+  font-size: 0.68rem;
+}
+
+.calorie-history-page td {
+  border-bottom-color: #efd7e4;
+}
+
+.calorie-history-page tbody tr:nth-child(even) {
+  background: #fff9fc;
+}
+
+.calorie-history-page tbody tr:hover {
+  background: var(--history-blue-soft);
+}
+
+.calorie-history-page .app-footer {
+  color: var(--history-ink);
+  font-size: 0.74rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .calorie-history-page {
+    --history-ink: #ffe4f3;
+    --history-muted: #d3b6cf;
+    --history-pink: #dd5b9a;
+    --history-pink-deep: #ff9dca;
+    --history-pink-soft: #4c2543;
+    --history-blue: #73c8ed;
+    --history-blue-soft: #213d52;
+    --history-lilac: #b89ae8;
+    --history-lilac-soft: #352b52;
+    --history-cream: #241d2a;
+    --history-line: #925b84;
+    --history-shadow: 4px 4px 0 rgba(0, 0, 0, 0.34);
+    --bg: #1a1620;
+    --surface: var(--history-cream);
+    --text: var(--history-ink);
+    --muted: var(--history-muted);
+    --border: var(--history-line);
+    --accent-bg: var(--history-pink-soft);
+  }
+
+  .calorie-history-page .app-header {
+    background:
+      linear-gradient(180deg, rgba(63, 35, 58, 0.96), rgba(55, 28, 52, 0.94)),
+      repeating-linear-gradient(135deg, transparent 0 12px, rgba(255, 255, 255, 0.05) 12px 14px);
+  }
+
+  .calorie-history-page .nav-link,
+  .calorie-history-page .segment,
+  .calorie-history-page input[type='date'],
+  .calorie-history-page table,
+  .calorie-history-page .chart-wrap {
+    background: #2d2434;
+    color: var(--history-ink);
+  }
+
+  .calorie-history-page .nav-link:hover,
+  .calorie-history-page .segment:hover,
+  .calorie-history-page tbody tr:hover {
+    background: var(--history-blue-soft);
+  }
+
+  .calorie-history-page tbody tr:nth-child(even) {
+    background: #29212f;
+  }
+}
+
+@media (max-width: 520px) {
+  .calorie-history-page .app-header {
+    min-height: 148px;
+    padding: 0.6rem 0.75rem 0.5rem;
+  }
+
+  .calorie-history-page .app-header h1 {
+    max-width: calc(100% - 72px);
+    font-size: 1.35rem;
+  }
+
+  .calorie-history-page .app-header .auth-bar {
+    position: static;
+    justify-content: center;
+    margin-top: 0.15rem;
+  }
+
+  .calorie-history-page .subtitle {
+    max-width: calc(100% - 72px);
+  }
+
+  .calorie-history-page .app-nav {
+    display: flex;
+    grid-template-columns: none;
+    width: calc(100% + 1.5rem);
+    margin-top: 0.55rem;
+    margin-right: -0.75rem;
+    margin-left: -0.75rem;
+    padding: 0.1rem 0.75rem 0.35rem;
+  }
+
+  .calorie-history-page .app-nav .nav-link {
+    flex: 0 0 51px;
+    min-height: 55px;
+  }
+
+  .calorie-history-page .app-header::before,
+  .calorie-history-page .app-header::after {
+    font-size: 1.5rem;
+  }
+
+  .calorie-history-page .card {
+    padding: 1.15rem 1rem;
+  }
+
+  .calorie-history-page .segmented {
+    width: 100%;
+  }
+
+  .calorie-history-page .segment {
+    flex: 1;
+    text-align: center;
+  }
+
+  .calorie-history-page .day-total {
+    font-size: 0.74rem;
+  }
+}
+
+@media (min-width: 820px) {
+  .calorie-history-page .container {
+    max-width: calc(100% - 2rem);
+    grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1.36fr) minmax(220px, 0.32fr);
+    grid-template-rows: auto 378px minmax(180px, auto) minmax(180px, auto);
+    gap: 1.15rem;
+    align-items: start;
+  }
+
+  .calorie-history-page .container > .segmented {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .calorie-history-page .container > .segmented .segment {
+    flex: 0 0 142px;
+    text-align: center;
+  }
+
+  .calorie-history-page .segmented {
+    justify-content: flex-start;
+    gap: 0.35rem;
+    padding-left: 0.8rem;
+  }
+
+  .calorie-history-page .segmented::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 1.1rem;
+    width: 94px;
+    height: 46px;
+    border: 3px solid #782d5d;
+    border-radius: 7px;
+    background:
+      radial-gradient(circle at 29% 50%, #fff2ad 0 7px, #7d356b 8px 12px, transparent 13px),
+      radial-gradient(circle at 71% 50%, #fff2ad 0 7px, #7d356b 8px 12px, transparent 13px),
+      linear-gradient(135deg, #fba3cb, #e65799 62%, #b53b7a);
+    box-shadow:
+      3px 3px 0 rgba(86, 29, 66, 0.5),
+      inset 2px 2px 0 rgba(255, 230, 242, 0.65);
+    transform: translateY(-50%) rotate(3deg);
+  }
+
+  .calorie-history-page .filter-panel {
+    grid-column: 1;
+    grid-row: 2;
+    height: 378px;
+  }
+
+  .calorie-history-page .filter-panel .save-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+
+  .calorie-history-page .filter-panel .field,
+  .calorie-history-page .filter-panel .btn {
+    width: 100%;
+  }
+
+  .calorie-history-page .filter-panel .btn {
+    margin: 0;
+  }
+
+  .calorie-history-page .summary-panel {
+    grid-column: 3;
+    grid-row: 2;
+    display: flex;
+    height: 378px;
+    align-self: start;
+    flex-direction: column;
+  }
+
+  .calorie-history-page .summary-panel .stats {
+    flex: 1;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .calorie-history-page .summary-panel .stat {
+    min-height: 0;
+  }
+
+  .calorie-history-page .summary-panel .stat-value {
+    font-size: 1.35rem;
+  }
+
+  .calorie-history-page .chart-panel {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    height: 378px;
+    flex-direction: column;
+  }
+
+  .calorie-history-page .chart-panel .chart-wrap {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .calorie-history-page .chart-panel #chart {
+    min-width: 0;
+    height: 100%;
+  }
+
+  .calorie-history-page .history-panel {
+    grid-column: 2;
+    grid-row: 3 / span 2;
+  }
+
+  .calorie-history-page .rhythm-panel {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .calorie-history-page .consistency-panel {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .calorie-history-page .macro-panel {
+    grid-column: 3;
+    grid-row: 3;
+  }
+
+  .calorie-history-page .favorites-panel {
+    grid-column: 3;
+    grid-row: 4;
+  }
+}
+
+/* The park scene is moved into the header by the shared shell on this page. */
+.calorie-history-page .app-header {
+  min-height: 176px;
+  background: linear-gradient(180deg, rgba(57, 27, 58, 0.4), rgba(57, 27, 58, 0.7));
+}
+
+.calorie-history-page .app-header .park-diary-banner {
+  z-index: 0;
+}
+
+.calorie-history-page .app-header .park-diary-banner::before,
+.calorie-history-page .app-header .park-diary-banner::after {
+  display: none;
+}
+
+.calorie-history-page .segmented {
+  min-height: 0;
+  padding: 0.35rem;
+  background: var(--history-lilac-soft);
+}
+
+.calorie-history-page .insight-panel h2 {
+  font-size: 1.1rem;
+}
+
+.calorie-history-page .insight-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+}
+
+.calorie-history-page .insight-list > div {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #c99abb;
+  background: var(--history-pink-soft);
+}
+
+.calorie-history-page .insight-list dt {
+  color: var(--history-muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.calorie-history-page .insight-list dd {
+  margin: 0.2rem 0 0;
+  color: var(--history-pink-deep);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.calorie-history-page .macro-bars {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.calorie-history-page .macro-bars > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.25rem 0.5rem;
+  align-items: center;
+  color: var(--history-ink);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.calorie-history-page .macro-bars i {
+  grid-column: 1 / -1;
+  display: block;
+  width: 0;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--history-pink);
+  box-shadow: 1px 1px 0 rgba(76, 35, 80, 0.38);
+  transition: width 0.2s ease;
+}
+
+.calorie-history-page .macro-bars > div:nth-child(2) i {
+  background: var(--history-blue);
+}
+
+.calorie-history-page .macro-bars > div:nth-child(3) i {
+  background: var(--history-lilac);
+}
+
+.calorie-history-page .insight-note {
+  margin: 1rem 0 0;
+  color: var(--history-muted);
+  font-size: 0.75rem;
+}
+
+.calorie-history-page .insight-note strong,
+.calorie-history-page .favorites-list b {
+  color: var(--history-pink-deep);
+}
+
+.calorie-history-page .favorites-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calorie-history-page .favorites-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px dotted var(--history-line);
+  color: var(--history-ink);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 520px) {
+  .calorie-history-page .app-header {
+    min-height: 192px;
+  }
+}
+
+@media (min-width: 521px) {
+  .calorie-history-page .app-nav {
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+    left: auto;
+    width: calc(100% - 2rem);
+    gap: 0;
+    margin: 0;
+    transform: translateX(50%);
+  }
+
+  .calorie-history-page .app-nav .nav-link {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    border-radius: 6px 6px 0 0;
+    box-shadow:
+      inset 1px 1px 0 #fff5fa,
+      inset -1px 0 0 rgba(122, 32, 84, 0.22);
+  }
+
+  .calorie-history-page .app-nav .nav-link.is-active {
+    box-shadow:
+      inset 1px 1px 0 #d98bbe,
+      inset -1px 0 0 rgba(255, 219, 239, 0.18);
+  }
+
+  .calorie-history-page .app-nav .nav-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    font-size: 0.95rem;
+  }
+
+  .calorie-history-page .app-nav .nav-label {
+    font-size: 0.6rem;
+    white-space: nowrap;
+  }
+}

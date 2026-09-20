@@ -27,12 +27,27 @@ const daysEl = document.getElementById('history-days');
 const canvas = document.getElementById('chart');
 
 const summary = {
-  meals: document.getElementById('sum-meals'),
   calories: document.getElementById('sum-calories'),
-  avg: document.getElementById('sum-avg'),
   protein: document.getElementById('sum-protein'),
   carbs: document.getElementById('sum-carbs'),
   fat: document.getElementById('sum-fat')
+};
+
+const insights = {
+  busiest: document.getElementById('rhythm-busiest'),
+  first: document.getElementById('rhythm-first'),
+  last: document.getElementById('rhythm-last'),
+  average: document.getElementById('consistency-average'),
+  high: document.getElementById('consistency-high'),
+  low: document.getElementById('consistency-low'),
+  protein: document.getElementById('macro-protein'),
+  carbs: document.getElementById('macro-carbs'),
+  fat: document.getElementById('macro-fat'),
+  proteinBar: document.getElementById('macro-protein-bar'),
+  carbsBar: document.getElementById('macro-carbs-bar'),
+  fatBar: document.getElementById('macro-fat-bar'),
+  proteinDensity: document.getElementById('protein-density'),
+  favorites: document.getElementById('ingredient-favorites')
 };
 
 const setDefaultRange = () => {
@@ -88,12 +103,86 @@ const renderSummary = (days) => {
     { calories: 0, protein: 0, carbs: 0, fat: 0 }
   );
 
-  summary.meals.textContent = meals.length.toString();
   summary.calories.textContent = format(totals.calories);
-  summary.avg.textContent = days.length ? format(totals.calories / days.length) : '0';
   summary.protein.textContent = format(totals.protein);
   summary.carbs.textContent = format(totals.carbs);
   summary.fat.textContent = format(totals.fat);
+
+  return totals;
+};
+
+const macroPercentages = (totals) => {
+  const macroCalories = {
+    protein: totals.protein * 4,
+    carbs: totals.carbs * 4,
+    fat: totals.fat * 9
+  };
+  const total = macroCalories.protein + macroCalories.carbs + macroCalories.fat;
+
+  return Object.fromEntries(
+    Object.entries(macroCalories).map(([key, value]) => [key, total ? (value / total) * 100 : 0])
+  );
+};
+
+const renderInsights = (days, totals) => {
+  const chronologicalMeals = [...meals].sort(
+    (left, right) => new Date(left.eaten_at) - new Date(right.eaten_at)
+  );
+  const hourCounts = new Map();
+  const ingredientCounts = new Map();
+
+  for (const meal of chronologicalMeals) {
+    const hour = new Date(meal.eaten_at).getHours();
+    hourCounts.set(hour, (hourCounts.get(hour) ?? 0) + 1);
+
+    const ingredients = Array.isArray(meal.ingredients) ? meal.ingredients : [];
+    for (const ingredient of ingredients) {
+      const name = normaliseIngredient(ingredient).name.trim();
+      if (!name) continue;
+      const key = name.toLocaleLowerCase();
+      const item = ingredientCounts.get(key) ?? { name, count: 0 };
+      item.count += 1;
+      ingredientCounts.set(key, item);
+    }
+  }
+
+  const busiestHour = [...hourCounts.entries()].sort(
+    ([leftHour, leftCount], [rightHour, rightCount]) =>
+      rightCount - leftCount || leftHour - rightHour
+  )[0];
+  insights.busiest.textContent = busiestHour
+    ? `${String(busiestHour[0]).padStart(2, '0')}:00 (${busiestHour[1]})`
+    : 'No meals yet';
+  insights.first.textContent = chronologicalMeals.length
+    ? formatTime(chronologicalMeals[0].eaten_at)
+    : '--:--';
+  insights.last.textContent = chronologicalMeals.length
+    ? formatTime(chronologicalMeals.at(-1).eaten_at)
+    : '--:--';
+
+  const dailyCalories = days.map((day) => day.calories);
+  const averageCalories = dailyCalories.length
+    ? dailyCalories.reduce((total, value) => total + value, 0) / dailyCalories.length
+    : 0;
+  insights.average.textContent = `${format(averageCalories)} kcal`;
+  insights.high.textContent = `${format(Math.max(0, ...dailyCalories))} kcal`;
+  insights.low.textContent = `${format(dailyCalories.length ? Math.min(...dailyCalories) : 0)} kcal`;
+
+  const macros = macroPercentages(totals);
+  for (const [key, value] of Object.entries(macros)) {
+    insights[key].textContent = `${format(value)}%`;
+    insights[`${key}Bar`].style.width = `${value}%`;
+  }
+  insights.proteinDensity.textContent = `${format(totals.calories ? (totals.protein / totals.calories) * 100 : 0)} g`;
+
+  const favorites = [...ingredientCounts.values()]
+    .sort((left, right) => right.count - left.count || left.name.localeCompare(right.name))
+    .slice(0, 5);
+  insights.favorites.innerHTML = favorites.length
+    ? favorites
+        .map((item) => `<li><span>${escapeHtml(item.name)}</span><b>${item.count}</b></li>`)
+        .join('')
+    : '<li>No ingredients in this range.</li>';
 };
 
 /* ------------------------------------------------------------------ */
@@ -143,7 +232,8 @@ const dayBlock = (day) => `
 const render = () => {
   const days = groupByDay(meals);
   daysEl.innerHTML = days.map(dayBlock).join('');
-  renderSummary(days);
+  const totals = renderSummary(days);
+  renderInsights(days, totals);
 
   drawLineChart(
     canvas,
