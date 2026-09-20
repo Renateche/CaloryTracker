@@ -3,3 +3,11 @@ node_modules/
 Thumbs.db
 *.log
 .vscode/
+
+# npm: the app loads supabase-js from a CDN, so these are local-only
+package.json
+package-lock.json
+
+# Agent skills installed locally
+.agents/
+skills-lock.json

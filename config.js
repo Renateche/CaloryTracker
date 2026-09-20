@@ -9,8 +9,8 @@
  * NEVER put the service_role key here; it bypasses RLS.
  */
 
-export const SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co';
-export const SUPABASE_ANON_KEY = 'YOUR-SUPABASE-ANON-KEY';
+export const SUPABASE_URL = 'https://lxdepwhjjuwdtawzzzrm.supabase.co';
+export const SUPABASE_ANON_KEY = 'sb_publishable_LYhsxdDi5GrI0VeuWzI0Lw_4pZqHwlI';
 
 export const isConfigured =
   !SUPABASE_URL.includes('YOUR-PROJECT-REF') && !SUPABASE_ANON_KEY.includes('YOUR-SUPABASE');
