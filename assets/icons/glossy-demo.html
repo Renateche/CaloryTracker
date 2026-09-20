@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Glossy Y2K Icon Collection</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700&display=swap');
+      :root {
+        color-scheme: light;
+        --ink: #3e3b63;
+        --pink: #f85aa4;
+        --line: #c7c6df;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        font-family: 'Nunito', sans-serif;
+        background-color: #eefaff;
+        background-image:
+          radial-gradient(#acdbe6 1px, transparent 1px),
+          linear-gradient(145deg, #fff8fc 0%, #e8faff 55%, #f0ecff 100%);
+        background-size:
+          20px 20px,
+          100% 100%;
+      }
+      main {
+        width: min(1100px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 48px 0 64px;
+      }
+      header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 28px;
+      }
+      h1 {
+        margin: 0;
+        font:
+          600 clamp(2rem, 7vw, 4.8rem)/0.9 'Fredoka',
+          sans-serif;
+        color: #514d7b;
+        letter-spacing: 0;
+      }
+      h1 span {
+        color: var(--pink);
+      }
+      header p {
+        max-width: 380px;
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 14px;
+      }
+      .icon-card {
+        min-width: 0;
+        padding: 20px 16px 14px;
+        border: 1px solid rgba(103, 99, 145, 0.23);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 10px 30px rgba(83, 78, 130, 0.09);
+        backdrop-filter: blur(8px);
+      }
+      .preview {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 1.2;
+        min-height: 150px;
+        border-bottom: 1px solid var(--line);
+      }
+      .preview img {
+        width: min(150px, 80%);
+        height: auto;
+        transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .icon-card:hover .preview img {
+        transform: translateY(-5px) rotate(-2deg) scale(1.05);
+      }
+      .meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding-top: 12px;
+      }
+      h2 {
+        overflow: hidden;
+        margin: 0;
+        font:
+          600 1rem/1.2 'Fredoka',
+          sans-serif;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      a {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        place-items: center;
+        border: 1px solid #aaa8c6;
+        border-radius: 50%;
+        color: var(--ink);
+        background: #fff;
+        text-decoration: none;
+        box-shadow:
+          inset 0 2px #fff,
+          0 3px 7px rgba(68, 64, 110, 0.15);
+      }
+      a:hover {
+        color: #fff;
+        border-color: #c93680;
+        background: var(--pink);
+      }
+      a svg {
+        width: 17px;
+        height: 17px;
+      }
+      @media (max-width: 620px) {
+        main {
+          padding-top: 28px;
+        }
+        header {
+          align-items: start;
+          flex-direction: column;
+        }
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .icon-card {
+          padding: 12px 10px 10px;
+        }
+        .preview {
+          min-height: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Glossy <span>Y2K</span><br />Icon Set</h1>
+        <p>
+          Original retro-tech motifs with candy color, chrome edges, dimensional shading, and glass
+          highlights. Each icon is a separate, scalable SVG.
+        </p>
+      </header>
+      <section class="grid" id="icon-grid" aria-label="Icon collection"></section>
+    </main>
+    <script>
+      const icons = [
+        ['messenger', 'Messenger'],
+        ['desktop', 'Bubble Desktop'],
+        ['flip-phone', 'Flip Phone'],
+        ['digital-pet', 'Digital Pet'],
+        ['music-player', 'Music Player'],
+        ['camera', 'Instant Camera'],
+        ['gamepad', 'Gamepad'],
+        ['floppy', 'Floppy Disk'],
+        ['heart-status', 'Heart Status'],
+        ['exercise', 'Exercise'],
+        ['sleep', 'Sleep'],
+        ['water', 'Water']
+      ];
+      const downloadIcon =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14"/></svg>';
+      document.querySelector('#icon-grid').innerHTML = icons
+        .map(
+          ([file, label]) => `
+        <article class="icon-card">
+          <div class="preview"><img src="glossy/${file}.svg" alt="${label} glossy Y2K icon" /></div>
+          <div class="meta"><h2>${label}</h2><a href="glossy/${file}.svg" download title="Download ${label}" aria-label="Download ${label}">${downloadIcon}</a></div>
+        </article>`
+        )
+        .join('');
+    </script>
+  </body>
+</html>

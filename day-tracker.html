@@ -3,29 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Habits</title>
+    <title>Day Tracker</title>
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body class="habits-page" data-tracker="habits">
+  <body class="calories-builder-page">
     <header class="app-header"></header>
 
     <main class="container">
       <span class="page-scene" aria-hidden="true">
-        <span class="scene-star scene-pos-tl">✦</span>
-        <span class="scene-star scene-pos-mr">✧</span>
+        <span class="scene-cloud scene-pos-tl"></span>
+        <span class="scene-cloud scene-pos-tr"></span>
         <span class="scene-ground"></span>
       </span>
+      <nav class="segmented" aria-label="Calorie views">
+        <a href="calories.html" class="segment">Recipes</a>
+        <a href="calories-history.html" class="segment">History</a>
+        <a href="day-tracker.html" class="segment is-active">Day Tracker</a>
+      </nav>
+
       <section class="card">
         <div class="card-head">
           <h2>Coming soon</h2>
           <span class="badge">Planned</span>
         </div>
         <p class="lede">
-          Daily habits with streaks and completion counts. The database tables already exist, so
-          this screen is the only thing missing.
+          A single day's meals at a glance, so you can check where you stand right now instead of
+          scrolling through the full history.
         </p>
-        <p class="tile-detail">Table: <code id="stub-table"></code></p>
       </section>
     </main>
 
@@ -33,6 +38,6 @@
       <p>Part of Lifestyle Tracker.</p>
     </footer>
 
-    <script type="module" src="js/features/stub.js"></script>
+    <script type="module" src="js/features/calories/day-tracker.js"></script>
   </body>
 </html>

@@ -1,0 +1,92 @@
+/*
+  Icon library palette — derived from "style inspo.docx" reference set:
+  MSN Messenger nostalgia collage, "DreamWorld OS" pastel desktop,
+  Y2K chrome/glitter collage, pastel-outline UI kit, kawaii retro-tech doodles.
+
+  Default (no theme class) = authentic Windows 95 look: silver button face,
+  double bevel (white/black outer + light-gray/dark-gray inner border, the
+  same construction used on real Win95 icons/buttons), navy/teal accents,
+  high contrast. Three alternate themes recolor the SAME icon geometry:
+    .theme-y2k         -> original pastel mint/pink/lavender kawaii look
+    .theme-geocities   -> hot pink/purple glitter-glow look
+    .theme-pixelgame   -> harsh high-contrast 8-bit arcade look
+*/
+
+.icon-svg {
+  width: 48px;
+  height: 48px;
+  shape-rendering: geometricPrecision;
+}
+
+/* Defaults live on :root (not .icon-svg) so a .theme-* class on an ancestor
+   element can override them via normal inheritance. Declaring these on the
+   svg element itself would always win over an inherited themed value. */
+:root {
+  --icon-ink: #000000;
+  --icon-hi: #ffffff;
+  --icon-bevel-hi: #dfdfdf;
+  --icon-bevel-sh: #808080;
+  --icon-c1: #c0c0c0;
+  --icon-c1-light: #eef2f6;
+  --icon-c2: #ffffff;
+  --icon-c3: #808080;
+  --icon-c4: #008080;
+  --icon-accent: #000080;
+  --icon-warn: #ffff00;
+  --icon-sh: #808080;
+}
+
+/* ---------- Original Y2K kawaii style ---------- */
+.theme-y2k {
+  --icon-ink: #2b2b2b;
+  --icon-hi: #ffffff;
+  --icon-bevel-hi: #fff5fa;
+  --icon-bevel-sh: #d9a6c2;
+  --icon-c1: #ffe9f2;
+  --icon-c1-light: #fff9fc;
+  --icon-c2: #b8e8d4;
+  --icon-c3: #cdb8f0;
+  --icon-c4: #7fd8e0;
+  --icon-accent: #ff6fa8;
+  --icon-warn: #ffd166;
+  --icon-sh: rgba(43, 14, 46, 0.35);
+}
+
+/* ---------- GeoCities / early web style ---------- */
+.theme-geocities {
+  --icon-ink: #4a0e4e;
+  --icon-hi: #ffffff;
+  --icon-bevel-hi: #ffe3f5;
+  --icon-bevel-sh: #7b2cbf;
+  --icon-c1: #ffd6ec;
+  --icon-c1-light: #fff0fa;
+  --icon-c2: #c9a6ff;
+  --icon-c3: #9b5de5;
+  --icon-c4: #00f5d4;
+  --icon-accent: #ff2e88;
+  --icon-warn: #fee440;
+  --icon-sh: #7b2cbf;
+}
+.theme-geocities .icon-svg {
+  filter: saturate(1.5) drop-shadow(0 0 2px var(--icon-accent));
+}
+
+/* ---------- Extra-pixelated gaming style ---------- */
+.theme-pixelgame {
+  --icon-ink: #000000;
+  --icon-hi: #ffffff;
+  --icon-bevel-hi: #ffffff;
+  --icon-bevel-sh: #000000;
+  --icon-c1: #e63946;
+  --icon-c1-light: #ff8a93;
+  --icon-c2: #2a9d8f;
+  --icon-c3: #264653;
+  --icon-c4: #457b9d;
+  --icon-accent: #f4a261;
+  --icon-warn: #ffe066;
+  --icon-sh: #000000;
+}
+.theme-pixelgame .icon-svg {
+  filter: contrast(1.35) saturate(1.4);
+  shape-rendering: crispEdges;
+}

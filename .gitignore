@@ -11,3 +11,4 @@ package-lock.json
 # Agent skills installed locally
 .agents/
 skills-lock.json
+style inspo.docx

@@ -1,4 +1,6 @@
 /* ---------- Design tokens ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
+
 :root {
   --bg: #f4f6fb;
   --surface: #ffffff;
@@ -13,6 +15,10 @@
   --radius: 14px;
   --shadow: 0 2px 10px rgba(28, 37, 54, 0.07);
 
+  --font-body:
+    'Quicksand', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Baloo 2', var(--font-body);
+
   --space-1: 0.35rem;
   --space-2: 0.6rem;
   --space-3: 0.9rem;
@@ -24,13 +30,39 @@
   --text-base: 1rem;
   --text-lg: 1.3rem;
 
-  --accent-calories: #2f6df6;
-  --accent-habits: #7c4dff;
-  --accent-health: #e04141;
-  --accent-exercise: #ef6c1a;
-  --accent-sleep: #3f51b5;
-  --accent-water: #0aa3c2;
-  --accent-mood: #17a673;
+  --accent-calories: #ff73bd;
+  --accent-habits: #a778ff;
+  --accent-health: #ff5fa2;
+  --accent-exercise: #ffb84d;
+  --accent-sleep: #7f8cff;
+  --accent-water: #55c8ff;
+  --accent-mood: #ff72d2;
+
+  /* Rounded y2k glossy look shared by every page (see .page-scene, .glossy-*) */
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --glossy-shadow: 0 10px 24px rgba(28, 37, 54, 0.12), 0 2px 6px rgba(28, 37, 54, 0.08);
+  --glossy-shadow-sm: 0 4px 10px rgba(28, 37, 54, 0.1);
+  --glossy-highlight-card: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0) 45%
+  );
+  --glossy-highlight-btn: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.65),
+    rgba(255, 255, 255, 0) 55%
+  );
+  --rainbow-border: linear-gradient(
+    90deg,
+    #ff5da2,
+    #ff9770,
+    #ffd60a,
+    #6bcb77,
+    #4ea8de,
+    #a855f7,
+    #ff5da2
+  );
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,20 +86,15 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
+  font-family: var(--font-body);
   line-height: 1.5;
 }
 
 h1,
 h2 {
   margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
   line-height: 1.25;
 }
 
@@ -82,12 +109,229 @@ h2 {
 
 /* ---------- Layout ---------- */
 .app-header {
-  padding: 2rem 1rem 1rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 168px;
+  padding: 1.4rem max(4.5rem, calc(50% - 400px)) 3.6rem;
+  border-bottom: 4px solid var(--primary-dark);
   text-align: center;
+}
+
+.app-header .auth-bar {
+  position: absolute;
+  z-index: 3;
+  top: 0.75rem;
+  right: 1rem;
+  display: flex;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* auth-bar reuses .card markup for other pages, but it's just a button row here, no card chrome. */
+.app-header .auth-bar.card::before,
+.app-header .auth-bar.card::after {
+  content: none;
+}
+
+.app-header .auth-status {
+  display: none;
+}
+
+.app-header .auth-actions {
+  gap: 0.35rem;
+}
+
+.app-header .auth-actions .btn {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.72rem;
 }
 
 .app-header h1 {
   font-size: 1.75rem;
+}
+
+/* Decorative header motif; pages drop this in <main> and shell.js moves it here. */
+.page-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.app-header > :not(.page-scene):not(.auth-bar):not(.app-nav) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Shared scene shapes: pages compose these with position utilities and theme colors below. */
+.scene-cloud {
+  position: absolute;
+  width: 56px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--scene-mid, rgba(255, 255, 255, 0.8));
+}
+
+.scene-cloud::before,
+.scene-cloud::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.scene-cloud::before {
+  left: 10px;
+  width: 22px;
+  height: 22px;
+}
+
+.scene-cloud::after {
+  right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.scene-hill {
+  position: absolute;
+  bottom: -10px;
+  width: 120px;
+  height: 60px;
+  border-radius: 50% 50% 0 0;
+  background: var(--scene-fg, rgba(255, 255, 255, 0.55));
+}
+
+.scene-ground {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 26px;
+  background:
+    radial-gradient(circle, var(--scene-accent, rgba(255, 255, 255, 0.7)) 0 2px, transparent 3px)
+      8px 6px / 26px 16px,
+    var(--scene-fg, rgba(255, 255, 255, 0.4));
+}
+
+.scene-wave {
+  position: absolute;
+  right: 0;
+  bottom: -8px;
+  left: 0;
+  height: 22px;
+  background: radial-gradient(circle at 10px 0, transparent 11px, var(--scene-fg, #fff) 12px)
+    repeat-x;
+  background-size: 34px 22px;
+}
+
+.scene-sun,
+.scene-moon {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--scene-accent, #fff6d8);
+}
+
+.scene-sun {
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.25);
+}
+
+.scene-moon {
+  box-shadow: -9px -3px 0 -3px var(--scene-mid, transparent);
+}
+
+.scene-sparkle {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background: var(--scene-accent, #fff);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+
+.scene-star {
+  position: absolute;
+  color: var(--scene-accent, #fff);
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.scene-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--scene-accent, rgba(255, 255, 255, 0.75));
+}
+
+.scene-bubble-sm {
+  width: 8px;
+  height: 8px;
+}
+
+.scene-bubble-lg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Position utilities so each theme can arrange the shared shapes differently. */
+.scene-pos-tl {
+  top: 14%;
+  left: 8%;
+}
+
+.scene-pos-tr {
+  top: 14%;
+  right: 9%;
+}
+
+.scene-pos-ml {
+  top: 42%;
+  left: 5%;
+}
+
+.scene-pos-mr {
+  top: 40%;
+  right: 6%;
+}
+
+.scene-pos-bl {
+  bottom: 8px;
+  left: 6%;
+}
+
+.scene-pos-br {
+  bottom: 8px;
+  right: 7%;
+}
+
+.scene-pos-center {
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.page-title {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.page-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.page-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 3px rgba(28, 37, 54, 0.14));
 }
 
 .subtitle {
@@ -103,6 +347,19 @@ h2 {
   gap: 1.25rem;
 }
 
+/* Same three-column layout as calorie-history at desktop widths; a lone card just spans all three. */
+@media (min-width: 820px) {
+  .container {
+    max-width: calc(100% - 2rem);
+    grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1.36fr) minmax(220px, 0.32fr);
+    align-items: start;
+  }
+
+  .container > * {
+    grid-column: 1 / -1;
+  }
+}
+
 .app-footer {
   padding: 1.5rem 1rem 2.5rem;
   text-align: center;
@@ -111,12 +368,50 @@ h2 {
 }
 
 /* ---------- Card ---------- */
+/* Same 2px border + hard offset shadow as calorie-history's cards, keyed to each page's own ink color. */
 .card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  border: 2px solid var(--primary-dark);
+  border-radius: 4px;
+  box-shadow: 4px 4px 0 color-mix(in srgb, var(--primary-dark) 16%, transparent);
   padding: 1.25rem;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glossy-highlight-card);
+  pointer-events: none;
+}
+
+/* Fun striped top border, colored from each page's own theme tokens. */
+.card::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--primary) 0 12px,
+    color-mix(in srgb, var(--primary) 45%, white) 12px 24px,
+    var(--primary-dark) 24px 36px,
+    var(--stripe-accent, var(--accent-bg)) 36px 48px
+  );
+  pointer-events: none;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .card h2 {
@@ -181,7 +476,7 @@ textarea {
   color: inherit;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 4px;
   min-width: 0;
 }
 
@@ -195,7 +490,7 @@ button:focus-visible {
 .form-error {
   margin: 0.9rem 0 0;
   padding: 0.6rem 0.8rem;
-  border-radius: 10px;
+  border-radius: 4px;
   background: #fdeaea;
   color: var(--danger-dark);
   font-size: 0.9rem;
@@ -209,56 +504,78 @@ button:focus-visible {
 }
 
 /* ---------- Buttons ---------- */
+/* Same boxy, hard-shadow, uppercase look as calorie-history's buttons, using each page's own theme tokens. */
 .btn {
+  position: relative;
+  overflow: hidden;
   padding: 0.8rem 1.4rem;
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-family: inherit;
   font-weight: 600;
-  border: 1px solid transparent;
-  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 2px solid var(--primary-dark);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 var(--primary-dark);
   cursor: pointer;
   transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
+    background-color 0.12s ease,
+    color 0.12s ease,
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--glossy-highlight-btn);
+  pointer-events: none;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--primary-dark);
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(180deg, var(--primary), var(--primary-dark));
   color: #fff;
 }
 
-.btn-primary:hover {
-  background: var(--primary-dark);
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, var(--primary-dark), var(--primary-dark));
 }
 
 .btn-ghost {
-  background: transparent;
-  color: var(--muted);
-  border-color: var(--border);
+  background: var(--accent-bg);
+  color: var(--text);
 }
 
-.btn-ghost:hover {
+.btn-ghost:hover:not(:disabled) {
   background: var(--bg);
 }
 
 .btn-danger {
-  background: var(--danger);
+  background: linear-gradient(180deg, var(--danger), var(--danger-dark));
   color: #fff;
 }
 
-.btn-danger:hover {
-  background: var(--danger-dark);
+.btn-danger:hover:not(:disabled) {
+  background: linear-gradient(180deg, var(--danger-dark), var(--danger-dark));
 }
 
 .btn-icon {
   padding: 0.45rem 0.75rem;
-  font-size: 0.85rem;
+  font-size: 0.68rem;
   background: transparent;
+  border-width: 1px;
+  box-shadow: none;
   color: var(--danger);
-  border-color: var(--border);
 }
 
-.btn-icon:hover {
+.btn-icon:hover:not(:disabled) {
   background: #fdeaea;
 }
 
@@ -269,7 +586,9 @@ button:focus-visible {
 
 table {
   width: 100%;
+  border: 2px solid var(--border);
   border-collapse: collapse;
+  background: var(--surface);
   font-size: 0.95rem;
 }
 
@@ -285,6 +604,7 @@ th {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  background: var(--accent-bg);
   color: var(--muted);
 }
 
@@ -314,7 +634,8 @@ tbody tr:last-child td {
   text-align: center;
   color: var(--muted);
   background: var(--bg);
-  border-radius: 10px;
+  border: 2px dashed var(--border);
+  border-radius: 4px;
 }
 
 /* ---------- Stats ---------- */
@@ -328,9 +649,14 @@ tbody tr:last-child td {
 }
 
 .stat {
+  position: relative;
+  overflow: hidden;
+  min-height: 88px;
   padding: 0.9rem 1rem;
   background: var(--bg);
-  border-radius: 10px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 color-mix(in srgb, var(--primary-dark) 12%, transparent);
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
@@ -347,33 +673,79 @@ tbody tr:last-child td {
 }
 
 .stat-value {
+  font-family: var(--font-display);
   font-size: 1.3rem;
   font-weight: 700;
 }
 
 /* ---------- Navigation ---------- */
+/* Docked to the header's bottom edge, spanning full width, like the calorie-history tab bar. */
 .app-nav {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 2px;
 }
 
 .nav-link {
-  padding: 0.5rem 1.1rem;
-  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 60px;
+  padding: 0.4rem 0.4rem;
+  border-radius: 6px 6px 0 0;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--muted);
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid var(--primary-dark);
+  border-bottom: none;
+  box-shadow: 2px 2px 0 var(--primary-dark);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.nav-link:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--primary-dark);
 }
 
 .nav-link.is-active {
-  background: var(--primary);
-  border-color: var(--primary);
+  background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+  border-color: var(--primary-dark);
   color: #fff;
+}
+
+.nav-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  place-items: center;
+}
+
+.nav-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 2px rgba(28, 37, 54, 0.18));
+}
+
+.nav-label {
+  font-family: var(--font-display);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ---------- Auth bar ---------- */
@@ -410,7 +782,8 @@ tbody tr:last-child td {
 .status-msg {
   margin: 0.9rem 0 0;
   padding: 0.6rem 0.8rem;
-  border-radius: 10px;
+  border: 2px dashed var(--border);
+  border-radius: 4px;
   background: var(--accent-bg);
   color: var(--primary-dark);
   font-size: 0.9rem;
@@ -441,9 +814,13 @@ tbody tr:last-child td {
 }
 
 .day-total {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--accent-bg);
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--text);
 }
 
 .row-actions {
@@ -462,6 +839,9 @@ tbody tr:last-child td {
 
 .chart-wrap {
   overflow-x: auto;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
 }
 
 .chart,
@@ -485,14 +865,17 @@ tbody tr:last-child td {
 }
 
 .tile {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
   padding: var(--space-4);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--tile-accent, var(--primary));
-  border-radius: 12px;
-  background: var(--bg);
+  border: 2px solid var(--primary-dark);
+  border-radius: 4px;
+  background: var(--surface);
+  box-shadow: 4px 4px 0 color-mix(in srgb, var(--primary-dark) 16%, transparent);
   text-decoration: none;
   color: inherit;
   transition:
@@ -500,9 +883,32 @@ tbody tr:last-child td {
     box-shadow 0.15s ease;
 }
 
+/* Fun striped top border, same idea as .card::after but colored from the tile's own accent. */
+.tile::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--tile-accent, var(--primary)) 0 12px,
+    color-mix(in srgb, var(--tile-accent, var(--primary)) 45%, white) 12px 24px,
+    color-mix(in srgb, var(--tile-accent, var(--primary)) 70%, black) 24px 36px
+  );
+  pointer-events: none;
+}
+
+.tile > * {
+  position: relative;
+  z-index: 1;
+}
+
 .tile:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 color-mix(in srgb, var(--primary-dark) 18%, transparent);
 }
 
 .tile-head {
@@ -520,6 +926,7 @@ tbody tr:last-child td {
 
 .tile-value {
   margin: 0;
+  font-family: var(--font-display);
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.1;
@@ -567,10 +974,13 @@ tbody tr:last-child td {
 
 /* ---------- Badge ---------- */
 .badge {
-  padding: 0.15rem 0.55rem;
-  border-radius: 999px;
-  background: var(--accent-bg);
+  padding: 0.2rem 0.7rem;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--accent-bg), var(--surface));
+  border: 2px solid var(--primary-dark);
+  box-shadow: 1px 1px 0 var(--primary-dark);
   color: var(--primary-dark);
+  font-family: var(--font-display);
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -581,7 +991,8 @@ tbody tr:last-child td {
 /* ---------- Progress ---------- */
 .progress {
   height: 8px;
-  border-radius: 999px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
   background: var(--border);
   overflow: hidden;
 }
@@ -593,28 +1004,46 @@ tbody tr:last-child td {
 }
 
 /* ---------- Segmented control ---------- */
+/* Same boxy/uppercase/hard-shadow language as .btn. */
 .segmented {
   display: inline-flex;
   padding: 0.25rem;
   gap: 0.25rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  border: 2px solid var(--primary-dark);
+  border-radius: 4px;
   background: var(--surface);
+  box-shadow: 2px 2px 0 var(--primary-dark);
   align-self: start;
 }
 
 .segment {
   padding: 0.45rem 1.1rem;
-  border-radius: 999px;
+  border: 2px solid var(--primary-dark);
+  border-radius: 4px;
+  background: var(--surface);
+  box-shadow: 2px 2px 0 var(--primary-dark);
   font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text);
   text-decoration: none;
+  transition:
+    transform 0.12s ease,
+    background-color 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.segment:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--primary-dark);
 }
 
 .segment.is-active {
-  background: var(--accent-bg);
-  color: var(--primary-dark);
+  background: var(--primary);
+  border-color: var(--primary-dark);
+  box-shadow: 2px 2px 0 var(--primary-dark);
+  color: #fff;
 }
 
 code {
@@ -644,12 +1073,27 @@ code {
     align-items: stretch;
   }
 
-  /* Eight nav links will not fit, so scroll them instead of wrapping. */
+  .app-header {
+    min-height: 190px;
+    padding: 1.1rem 0.9rem 0.75rem;
+  }
+
+  .app-header .auth-bar {
+    position: static;
+    justify-content: center;
+    margin-top: 0.4rem;
+  }
+
+  /* Eight nav links will not fit docked full-width, so drop them back into flow and scroll instead. */
   .app-nav {
+    position: static;
+    display: flex;
     flex-wrap: nowrap;
     justify-content: flex-start;
     overflow-x: auto;
     scrollbar-width: none;
+    gap: 0.35rem;
+    margin-top: 0.6rem;
     padding: 0 1rem 0.25rem;
     margin-left: -1rem;
     margin-right: -1rem;
@@ -661,6 +1105,8 @@ code {
 
   .nav-link {
     flex: 0 0 auto;
+    border-radius: 4px;
+    border-bottom: 2px solid var(--primary-dark);
   }
 
   .tile-grid {
@@ -668,22 +1114,655 @@ code {
   }
 }
 
-/* ---------- Calorie History: retro diary ---------- */
+/* ---------- Tracker page themes: rounded glossy y2k, one palette + motif each ---------- */
+
+.calories-builder-page {
+  --bg: #fff3fb;
+  --surface: #fffaff;
+  --text: #4c2350;
+  --muted: #8a5f82;
+  --border: #f4bee2;
+  --primary: #ff73bd;
+  --primary-dark: #c94f9a;
+  --accent-bg: #ffe1f4;
+  --stripe-accent: #fff18f;
+  --scene-mid: #ffd2ee;
+  --scene-fg: #ffaddb;
+  --scene-accent: #fff;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 10% 0%, rgba(139, 215, 255, 0.34), transparent 38%),
+    radial-gradient(circle at 88% 10%, rgba(255, 115, 189, 0.24), transparent 34%),
+    linear-gradient(rgba(201, 79, 154, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 79, 154, 0.08) 1px, transparent 1px),
+    linear-gradient(
+      135deg,
+      rgba(255, 225, 244, 0.54),
+      rgba(224, 246, 255, 0.5) 52%,
+      rgba(255, 241, 143, 0.24)
+    );
+  background-size:
+    auto,
+    auto,
+    18px 18px,
+    18px 18px,
+    auto;
+}
+
+.calories-builder-page .page-scene {
+  background:
+    radial-gradient(circle at 16% 18%, rgba(139, 215, 255, 0.55), transparent 30%),
+    radial-gradient(circle at 84% 18%, rgba(255, 241, 143, 0.42), transparent 28%),
+    linear-gradient(180deg, #ffd2ee, transparent 72%);
+}
+
+.calories-builder-page .page-scene::before,
+.calories-builder-page .page-scene::after {
+  content: '✦';
+  position: absolute;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(201, 79, 154, 0.4);
+  font-size: 1.4rem;
+}
+
+.calories-builder-page .page-scene::before {
+  top: 12%;
+  left: 8%;
+}
+
+.calories-builder-page .page-scene::after {
+  content: '♡';
+  top: 20%;
+  right: 10%;
+  font-size: 1.1rem;
+}
+
+/* Three-column layout: ingredient+save stack | meal builder | totals. */
+.calories-builder-page .ingredient-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+@media (min-width: 820px) {
+  .calories-builder-page .ingredient-stack {
+    grid-column: 1;
+  }
+
+  .calories-builder-page .meal-panel {
+    grid-column: 2;
+  }
+
+  .calories-builder-page .totals-panel {
+    grid-column: 3;
+  }
+
+  .calories-builder-page .save-panel .save-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .calories-builder-page .save-panel .field-grow {
+    flex: none;
+  }
+
+  .calories-builder-page .save-panel .btn {
+    width: 100%;
+  }
+}
+
+.exercise-page {
+  --bg: #fff7df;
+  --surface: #fffdf4;
+  --text: #594124;
+  --muted: #8b7356;
+  --border: #f4d68b;
+  --primary: #ffb84d;
+  --primary-dark: #cc7a22;
+  --accent-bg: #fff0bd;
+  --stripe-accent: #ff78c8;
+  --scene-mid: #ffe29d;
+  --scene-fg: #ffc86f;
+  --scene-accent: #fff4a8;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 0%, rgba(255, 120, 200, 0.28), transparent 36%),
+    radial-gradient(circle at 86% 8%, rgba(157, 245, 207, 0.24), transparent 34%),
+    linear-gradient(rgba(204, 122, 34, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(204, 122, 34, 0.08) 1px, transparent 1px),
+    linear-gradient(
+      135deg,
+      rgba(255, 246, 196, 0.55),
+      rgba(255, 184, 77, 0.22) 52%,
+      rgba(255, 120, 200, 0.2)
+    );
+  background-size:
+    auto,
+    auto,
+    18px 18px,
+    18px 18px,
+    auto;
+}
+
+.exercise-page .page-scene {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 120, 200, 0.4), transparent 30%),
+    radial-gradient(circle at 86% 12%, rgba(157, 245, 207, 0.32), transparent 30%),
+    linear-gradient(180deg, #ffe29d, transparent 72%);
+}
+
+/* dashed motion trail + star bursts */
+.exercise-page .page-scene::before {
+  content: '';
+  position: absolute;
+  top: 45%;
+  left: 6%;
+  width: 55%;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, #fff 0 14px, transparent 14px 22px);
+  opacity: 0.8;
+  transform: rotate(-4deg);
+}
+
+.exercise-page .page-scene::after {
+  content: '✺';
+  position: absolute;
+  top: 18%;
+  right: 12%;
+  color: #fff;
+  font-size: 1.6rem;
+  text-shadow: 0 1px 2px rgba(204, 122, 34, 0.45);
+}
+
+.habits-page {
+  --bg: #f7efff;
+  --surface: #fbf9ff;
+  --text: #4b2a73;
+  --muted: #8268a3;
+  --border: #dcbfff;
+  --primary: #a778ff;
+  --primary-dark: #734bd1;
+  --accent-bg: #efe2ff;
+  --stripe-accent: #9df5cf;
+  --scene-mid: #dbc8ff;
+  --scene-fg: #bfa0ff;
+  --scene-accent: #fff;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 11% 0%, rgba(157, 245, 207, 0.32), transparent 38%),
+    radial-gradient(circle at 88% 8%, rgba(255, 114, 210, 0.22), transparent 34%),
+    linear-gradient(rgba(115, 75, 209, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(115, 75, 209, 0.07) 1px, transparent 1px),
+    linear-gradient(
+      135deg,
+      rgba(242, 231, 255, 0.72),
+      rgba(202, 167, 255, 0.28) 48%,
+      rgba(157, 245, 207, 0.2)
+    );
+  background-size:
+    auto,
+    auto,
+    18px 18px,
+    18px 18px,
+    auto;
+}
+
+.habits-page .page-scene {
+  background:
+    radial-gradient(circle at 13% 18%, rgba(157, 245, 207, 0.4), transparent 30%),
+    radial-gradient(circle at 84% 16%, rgba(255, 114, 210, 0.28), transparent 30%),
+    linear-gradient(180deg, #dbc8ff, transparent 72%);
+}
+
+/* pixel confetti squares + checkmark sticker */
+.habits-page .page-scene::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  box-shadow:
+    24px 8px 0 rgba(255, 255, 255, 0.85),
+    48px -4px 0 rgba(255, 255, 255, 0.7),
+    72px 14px 0 rgba(255, 255, 255, 0.6);
+}
+
+.habits-page .page-scene::after {
+  content: '✓';
+  position: absolute;
+  top: 22%;
+  right: 12%;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+.health-page {
+  --bg: #fff0f6;
+  --surface: #fffaff;
+  --text: #642845;
+  --muted: #9b6680;
+  --border: #ffbdd8;
+  --primary: #ff5fa2;
+  --primary-dark: #c93677;
+  --accent-bg: #ffe0ef;
+  --stripe-accent: #8bd7ff;
+  --scene-mid: #ffc2dd;
+  --scene-fg: #f58fc1;
+  --scene-accent: #fff;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 11% 0%, rgba(139, 215, 255, 0.32), transparent 38%),
+    radial-gradient(circle at 88% 8%, rgba(255, 241, 143, 0.22), transparent 34%),
+    linear-gradient(rgba(201, 54, 119, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 54, 119, 0.08) 1px, transparent 1px),
+    linear-gradient(
+      135deg,
+      rgba(255, 224, 239, 0.72),
+      rgba(255, 95, 162, 0.18) 50%,
+      rgba(139, 215, 255, 0.22)
+    );
+  background-size:
+    auto,
+    auto,
+    18px 18px,
+    18px 18px,
+    auto;
+}
+
+.health-page .page-scene {
+  background:
+    radial-gradient(circle at 12% 20%, rgba(139, 215, 255, 0.4), transparent 30%),
+    radial-gradient(circle at 86% 14%, rgba(255, 241, 143, 0.28), transparent 30%),
+    linear-gradient(180deg, #ffc2dd, transparent 72%);
+}
+
+/* heartbeat pulse line + heart sticker */
+.health-page .page-scene::before {
+  content: '';
+  position: absolute;
+  top: 42%;
+  left: 8%;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0 10%,
+    #fff 10% 12%,
+    transparent 12% 20%,
+    #fff 20% 24%,
+    transparent 24% 32%,
+    #fff 32% 33%,
+    transparent 33% 100%
+  );
+  opacity: 0.9;
+}
+
+.health-page .page-scene::after {
+  content: '♥';
+  position: absolute;
+  top: 16%;
+  right: 12%;
+  color: #fff;
+  font-size: 1.5rem;
+  text-shadow: 0 1px 2px rgba(201, 54, 119, 0.45);
+}
+
+.sleep-page {
+  --bg: #f3f0ff;
+  --surface: #fbf9ff;
+  --text: #33285f;
+  --muted: #706699;
+  --border: #cabfff;
+  --primary: #7f8cff;
+  --primary-dark: #565ecf;
+  --accent-bg: #e6e8ff;
+  --stripe-accent: #fff18f;
+  --scene-mid: #d5d8ff;
+  --scene-fg: #b8beff;
+  --scene-accent: #fff18f;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 0%, rgba(255, 241, 143, 0.34), transparent 36%),
+    radial-gradient(circle at 88% 8%, rgba(255, 114, 210, 0.18), transparent 34%),
+    linear-gradient(rgba(86, 94, 207, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(86, 94, 207, 0.08) 1px, transparent 1px),
+    linear-gradient(
+      135deg,
+      rgba(230, 232, 255, 0.74),
+      rgba(127, 140, 255, 0.22) 52%,
+      rgba(255, 241, 143, 0.18)
+    );
+  background-size:
+    auto,
+    auto,
+    18px 18px,
+    18px 18px,
+    auto;
+}
+
+.sleep-page .page-scene {
+  background:
+    radial-gradient(circle at 16% 20%, rgba(255, 241, 143, 0.42), transparent 30%),
+    radial-gradient(circle at 84% 14%, rgba(255, 114, 210, 0.24), transparent 30%),
+    linear-gradient(180deg, #d5d8ff, transparent 74%);
+}
+
+/* crescent moon + twinkle stars */
+.sleep-page .page-scene::before {
+  content: '';
+  position: absolute;
+  top: 62%;
+  right: 16%;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff18f;
+  box-shadow:
+    -10px -4px 0 -4px #f3f0ff,
+    inset -6px -2px 0 0 #f3f0ff;
+}
+
+.sleep-page .page-scene::after {
+  content: '✦ ✧ ✦';
+  position: absolute;
+  top: 16%;
+  left: 10%;
+  color: #fff18f;
+  letter-spacing: 0.6em;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.water-page {
+  --bg: #eaf9ff;
+  --surface: #fbfeff;
+  --text: #254d68;
+  --muted: #5c879d;
+  --border: #a9def8;
+  --primary: #55c8ff;
+  --primary-dark: #2786bd;
+  --accent-bg: #dcf4ff;
+  --stripe-accent: #ff8bd7;
+  --scene-mid: #bdeeff;
+  --scene-fg: #83d8ff;
+  --scene-accent: #fff;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 0%, rgba(255, 139, 215, 0.28), transparent 36%),
+    radial-gradient(circle at 88% 8%, rgba(157, 245, 207, 0.22), transparent 34%),
+    linear-gradient(rgba(39, 134, 189, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(39, 134, 189, 0.08) 1px, transparent 1px),
+    linear-gradient(
+      135deg,
+      rgba(220, 244, 255, 0.75),
+      rgba(85, 200, 255, 0.2) 50%,
+      rgba(255, 139, 215, 0.18)
+    );
+  background-size:
+    auto,
+    auto,
+    18px 18px,
+    18px 18px,
+    auto;
+}
+
+.water-page .page-scene {
+  background:
+    radial-gradient(circle at 16% 18%, rgba(255, 139, 215, 0.34), transparent 30%),
+    radial-gradient(circle at 84% 12%, rgba(157, 245, 207, 0.3), transparent 30%),
+    linear-gradient(180deg, #bdeeff, transparent 72%);
+}
+
+/* wave crest + rising bubbles */
+.water-page .page-scene::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 26px;
+  background: radial-gradient(circle at 10px 0, transparent 12px, #fff 13px) repeat-x;
+  background-size: 40px 26px;
+  opacity: 0.7;
+}
+
+.water-page .page-scene::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: 16%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow:
+    18px 20px 0 -2px rgba(255, 255, 255, 0.7),
+    -14px 30px 0 -4px rgba(255, 255, 255, 0.6);
+}
+
+.mood-page {
+  --bg: #fff0fb;
+  --surface: #fffaff;
+  --text: #64285c;
+  --muted: #93648e;
+  --border: #ffc0eb;
+  --primary: #ff72d2;
+  --primary-dark: #ba4db0;
+  --accent-bg: #ffe0f5;
+  --stripe-accent: #9df5cf;
+  --scene-mid: #ffc5ed;
+  --scene-fg: #f7a4da;
+  --scene-accent: #fff;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 0%, rgba(157, 245, 207, 0.3), transparent 36%),
+    radial-gradient(circle at 88% 8%, rgba(139, 215, 255, 0.22), transparent 34%),
+    linear-gradient(rgba(186, 77, 176, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(186, 77, 176, 0.08) 1px, transparent 1px),
+    linear-gradient(
+      135deg,
+      rgba(255, 224, 245, 0.74),
+      rgba(255, 114, 210, 0.2) 50%,
+      rgba(157, 245, 207, 0.2)
+    );
+  background-size:
+    auto,
+    auto,
+    18px 18px,
+    18px 18px,
+    auto;
+}
+
+.mood-page .page-scene {
+  background:
+    radial-gradient(circle at 14% 18%, rgba(157, 245, 207, 0.38), transparent 30%),
+    radial-gradient(circle at 86% 16%, rgba(139, 215, 255, 0.28), transparent 30%),
+    linear-gradient(180deg, #ffc5ed, transparent 72%);
+}
+
+/* disco glitter dots + heart confetti */
+.mood-page .page-scene::before {
+  content: '';
+  position: absolute;
+  top: 18%;
+  left: 12%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    20px 10px 0 rgba(255, 255, 255, 0.8),
+    38px -2px 0 rgba(255, 255, 255, 0.6),
+    56px 14px 0 rgba(255, 255, 255, 0.9),
+    74px 2px 0 rgba(255, 255, 255, 0.5);
+}
+
+.mood-page .page-scene::after {
+  content: '♡ ♡';
+  position: absolute;
+  top: 20%;
+  right: 12%;
+  color: #fff;
+  font-size: 1.1rem;
+  letter-spacing: 0.3em;
+  text-shadow: 0 1px 2px rgba(186, 77, 176, 0.4);
+}
+
+.dashboard-page {
+  --bg: #fdf1ff;
+  --surface: #fffbfe;
+  --text: #4f2559;
+  --muted: #8d6696;
+  --border: #e9c4f3;
+  --primary: #d978ff;
+  --primary-dark: #a855f7;
+  --accent-bg: #ffe3f3;
+  --stripe-accent: #ffd60a;
+  --scene-mid: #ffd6f0;
+  --scene-fg: #e2aef2;
+  --scene-accent: #fff;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 8% 0%, rgba(255, 93, 162, 0.28), transparent 34%),
+    radial-gradient(circle at 28% 8%, rgba(255, 214, 10, 0.22), transparent 32%),
+    radial-gradient(circle at 58% 0%, rgba(107, 203, 119, 0.22), transparent 34%),
+    radial-gradient(circle at 86% 8%, rgba(78, 168, 222, 0.24), transparent 34%),
+    radial-gradient(circle at 50% 62%, rgba(168, 85, 247, 0.16), transparent 46%),
+    linear-gradient(rgba(168, 85, 247, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.08) 1px, transparent 1px),
+    linear-gradient(120deg, #ffe3f3 0%, #fff6d8 25%, #e3ffe8 50%, #e3f3ff 75%, #f3e3ff 100%);
+  background-size:
+    auto,
+    auto,
+    auto,
+    auto,
+    auto,
+    auto,
+    18px 18px,
+    18px 18px,
+    auto;
+}
+
+.dashboard-page .page-scene {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 93, 162, 0.42), transparent 30%),
+    radial-gradient(circle at 32% 14%, rgba(255, 214, 10, 0.34), transparent 28%),
+    radial-gradient(circle at 58% 18%, rgba(107, 203, 119, 0.3), transparent 30%),
+    radial-gradient(circle at 84% 14%, rgba(78, 168, 222, 0.34), transparent 30%),
+    linear-gradient(180deg, #ffcdf2, transparent 72%);
+}
+
+.dashboard-page .card {
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(135deg, #ff5da2, #ffd60a, #6bcb77, #4ea8de, #a855f7) border-box;
+}
+
+.dashboard-page .card::after,
+.dashboard-page .tile::after {
+  background: repeating-linear-gradient(
+    90deg,
+    #ff5da2 0 8px,
+    #ff9770 8px 16px,
+    #ffd60a 16px 24px,
+    #6bcb77 24px 32px,
+    #4ea8de 32px 40px,
+    #a855f7 40px 48px
+  );
+}
+
+.dashboard-page .nav-link {
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--rainbow-border) border-box;
+  border-color: transparent;
+}
+
+.dashboard-page .nav-link.is-active {
+  background:
+    linear-gradient(180deg, var(--primary), var(--primary-dark)) padding-box,
+    var(--rainbow-border) border-box;
+  border-color: transparent;
+}
+
+.dashboard-page .tile {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 251, 254, 0.86)),
+    linear-gradient(
+      135deg,
+      rgba(255, 93, 162, 0.18),
+      rgba(255, 214, 10, 0.16),
+      rgba(107, 203, 119, 0.14),
+      rgba(78, 168, 222, 0.16),
+      rgba(168, 85, 247, 0.16)
+    );
+}
+
+/* welcome sparkle + soft clouds */
+.dashboard-page .page-scene::before,
+.dashboard-page .page-scene::after {
+  content: '✦';
+  position: absolute;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(168, 85, 247, 0.4);
+  font-size: 1.3rem;
+}
+
+.dashboard-page .page-scene::before {
+  top: 14%;
+  left: 10%;
+}
+
+.dashboard-page .page-scene::after {
+  content: '✧';
+  top: 18%;
+  right: 11%;
+  font-size: 1.6rem;
+}
+
+/* Three-column layout: intro | today | tile stack, matching the shared container grid. */
+.dashboard-page .tile-grid {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 820px) {
+  .dashboard-page .container > .intro-panel {
+    grid-column: 1;
+  }
+
+  .dashboard-page .container > .today-panel {
+    grid-column: 2;
+  }
+
+  .dashboard-page .container > .tile-stack-panel {
+    grid-column: 3;
+  }
+}
+
+/* ---------- Calorie History: Y2K diary ---------- */
 .calorie-history-page {
-  --history-ink: #4c2350;
-  --history-muted: #7d557d;
-  --history-pink: #ee5fa4;
-  --history-pink-deep: #bd3678;
-  --history-pink-soft: #ffe1ef;
-  --history-blue: #72bde6;
-  --history-blue-soft: #dff4ff;
-  --history-lilac: #c7adf1;
-  --history-lilac-soft: #f0e9ff;
-  --history-cream: #fff9ed;
-  --history-line: #dcaed0;
-  --history-shadow: 4px 4px 0 rgba(113, 59, 113, 0.16);
-  --chart-font: Verdana, Geneva, sans-serif;
-  --bg: #f9eaf3;
+  --history-ink: #4b235a;
+  --history-muted: #82608d;
+  --history-pink: #ff70c8;
+  --history-pink-deep: #a855f7;
+  --history-pink-soft: #ffe1f4;
+  --history-blue: #8bd7ff;
+  --history-blue-soft: #e0f6ff;
+  --history-lilac: #caa7ff;
+  --history-lilac-soft: #f2e7ff;
+  --history-cream: #fffaff;
+  --history-line: #e7b8f5;
+  --history-shadow: 4px 4px 0 rgba(168, 85, 247, 0.16);
+  --chart-font: var(--font-body);
+  --bg: #fff0fb;
   --surface: var(--history-cream);
   --text: var(--history-ink);
   --muted: var(--history-muted);
@@ -691,24 +1770,23 @@ code {
   --primary: var(--history-pink);
   --primary-dark: var(--history-pink-deep);
   --accent-bg: var(--history-pink-soft);
+  --stripe-accent: #9df5cf;
   --shadow: var(--history-shadow);
   --radius: 4px;
   min-height: 100vh;
   background-attachment: fixed;
-  background-color: #5d2f66;
+  background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse at 8% 30%, rgba(245, 145, 195, 0.42), transparent 34%),
-    radial-gradient(ellipse at 90% 12%, rgba(135, 103, 202, 0.48), transparent 35%),
-    linear-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
-    linear-gradient(155deg, #592c62 0%, #8d477f 42%, #c15f8c 68%, #4d7b78 100%);
+    radial-gradient(circle at 10% 0%, rgba(139, 215, 255, 0.38), transparent 38%),
+    radial-gradient(circle at 88% 10%, rgba(255, 112, 200, 0.22), transparent 34%),
+    linear-gradient(rgba(168, 85, 247, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.08) 1px, transparent 1px);
   background-size:
     auto,
     auto,
     18px 18px,
-    18px 18px,
-    auto;
-  font-family: Verdana, Geneva, sans-serif;
+    18px 18px;
+  font-family: var(--font-body);
 }
 
 .calorie-history-page .app-header {
@@ -716,20 +1794,20 @@ code {
   overflow: hidden;
   min-height: 122px;
   padding: 0.55rem max(6rem, calc(50% - 440px)) 0.55rem max(10.5rem, calc(50% - 440px));
-  border-top: 3px solid #ffd3e5;
-  border-bottom: 4px solid #8f2e68;
+  border-top: 3px solid #ffe7f8;
+  border-bottom: 4px solid var(--history-pink-deep);
   background:
-    linear-gradient(180deg, rgba(255, 182, 211, 0.35), transparent 55%),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 7px),
-    linear-gradient(180deg, #f477af, #d94a8c);
-  box-shadow: inset 0 -3px 0 rgba(129, 33, 86, 0.34);
+    linear-gradient(180deg, rgba(255, 231, 248, 0.58), transparent 55%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.24) 0 1px, transparent 1px 7px),
+    linear-gradient(180deg, #ff9fde, var(--history-pink-deep));
+  box-shadow: inset 0 -3px 0 rgba(168, 85, 247, 0.28);
 }
 
 .calorie-history-page .app-header .auth-bar {
   position: absolute;
   z-index: 3;
   top: 0.6rem;
-  right: max(0.8rem, calc(50% - 620px));
+  right: 1rem;
   display: flex;
   min-height: 0;
   padding: 0;
@@ -748,10 +1826,10 @@ code {
 
 .calorie-history-page .app-header .auth-actions .btn {
   padding: 0.45rem 0.6rem;
-  border-color: #8d2d61;
+  border-color: var(--history-pink-deep);
   box-shadow:
-    1px 2px 0 #8d2d61,
-    inset 1px 1px 0 #fff5fa;
+    1px 2px 0 var(--history-pink-deep),
+    inset 1px 1px 0 #fff7fc;
   font-size: 0.58rem;
 }
 
@@ -759,7 +1837,7 @@ code {
 .calorie-history-page .app-header::after {
   position: absolute;
   color: var(--history-pink);
-  font-family: Georgia, serif;
+  font-family: var(--font-display);
   font-size: 2.2rem;
   line-height: 1;
   text-shadow: 1px 1px 0 #fff;
@@ -782,173 +1860,21 @@ code {
   z-index: 1;
   margin: 0;
   color: #fff;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-  font-style: italic;
   letter-spacing: 0;
   text-shadow:
-    1px 1px 0 #8b285d,
-    3px 3px 0 rgba(122, 31, 78, 0.36);
+    1px 1px 0 #7e38c6,
+    3px 3px 0 rgba(117, 45, 166, 0.28);
 }
 
 .calorie-history-page .subtitle {
   position: relative;
   z-index: 1;
   margin: 0.2rem 0 0;
-  color: #fff0f8;
+  color: #fff8ff;
   font-size: 0.68rem;
-  text-shadow: 1px 1px 0 #a12d68;
-}
-
-.calorie-history-page .app-nav {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(8, minmax(47px, 1fr));
-  gap: 0.25rem;
-  margin-top: 0.45rem;
-}
-
-.calorie-history-page .nav-link,
-.calorie-history-page .segment {
-  border: 2px solid var(--history-ink);
-  border-radius: 3px;
-  background: #fff;
-  box-shadow: 2px 2px 0 var(--history-ink);
-  color: var(--history-ink);
-  font-size: 0.76rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease,
-    background-color 0.12s ease;
-}
-
-.calorie-history-page .app-nav .nav-link {
-  display: grid;
-  min-height: 57px;
-  padding: 0.2rem 0.1rem 0.25rem;
-  place-items: center;
-  border: 2px solid #8d2d61;
-  border-radius: 4px;
-  background: linear-gradient(#ffd2e4, #f89ac0);
-  box-shadow:
-    1px 2px 0 #8d2d61,
-    inset 1px 1px 0 #fff5fa;
-  color: #702651;
-  text-align: center;
-}
-
-.calorie-history-page .app-nav .nav-link:hover {
-  background: linear-gradient(#fff0f7, #ffc1dc);
-}
-
-.calorie-history-page .app-nav .nav-link.is-active {
-  border-color: #fff0f7;
-  background: linear-gradient(#a84985, #7d2e67);
-  box-shadow:
-    1px 2px 0 #69204f,
-    inset 1px 1px 0 #d98bbe;
-  color: #fff;
-}
-
-.calorie-history-page .nav-icon {
-  display: grid;
-  width: 25px;
-  height: 25px;
-  place-items: center;
-  border: 1px solid rgba(119, 35, 79, 0.35);
-  border-radius: 7px;
-  background: rgba(255, 255, 255, 0.35);
-  color: #7b2658;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.18rem;
-  line-height: 1;
-}
-
-.calorie-history-page .nav-link.is-active .nav-icon {
-  border-color: rgba(255, 231, 244, 0.45);
-  background: rgba(255, 205, 229, 0.17);
-  color: #ffe5f3;
-}
-
-.calorie-history-page .nav-icon::before {
-  content: '✦';
-}
-
-.calorie-history-page .nav-link[data-tracker='dashboard'] .nav-icon::before {
-  content: '⌂';
-}
-.calorie-history-page .nav-link[data-tracker='calories'] .nav-icon::before {
-  content: '♡';
-}
-.calorie-history-page .nav-link[data-tracker='habits'] .nav-icon::before {
-  content: '✓';
-}
-.calorie-history-page .nav-link[data-tracker='health'] .nav-icon::before {
-  content: '+';
-}
-.calorie-history-page .nav-link[data-tracker='exercise'] .nav-icon::before {
-  content: '☼';
-}
-.calorie-history-page .nav-link[data-tracker='sleep'] .nav-icon::before {
-  content: '☾';
-}
-.calorie-history-page .nav-link[data-tracker='water'] .nav-icon::before {
-  content: '≈';
-}
-.calorie-history-page .nav-link[data-tracker='mood'] .nav-icon::before {
-  content: '☻';
-}
-
-.calorie-history-page .nav-label {
-  display: block;
-  font-size: 0.52rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1;
-}
-
-.calorie-history-page .nav-link:hover,
-.calorie-history-page .segment:hover {
-  background: var(--history-blue-soft);
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0 var(--history-ink);
-}
-
-.calorie-history-page .nav-link.is-active,
-.calorie-history-page .segment.is-active {
-  border-color: var(--history-pink-deep);
-  background: var(--history-pink);
-  box-shadow: 2px 2px 0 var(--history-pink-deep);
-  color: #fff;
-}
-
-.calorie-history-page .container {
-  max-width: 940px;
-  gap: 1.5rem;
-  padding: 1.75rem 1rem;
-}
-
-.calorie-history-page .segmented {
-  position: relative;
-  display: flex;
-  min-height: 145px;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 0.55rem;
-  overflow: hidden;
-  padding: 1rem;
-  border: 2px solid var(--history-ink);
-  border-radius: 5px;
-  background: #d885bd;
-  box-shadow: var(--history-shadow);
-}
-
-.calorie-history-page .segmented .segment {
-  position: relative;
-  z-index: 5;
+  text-shadow: 1px 1px 0 rgba(117, 45, 166, 0.75);
 }
 
 .calorie-history-page .park-diary-banner {
@@ -958,9 +1884,9 @@ code {
   border: 0;
   border-radius: 0;
   background:
-    radial-gradient(circle at 20% 28%, rgba(255, 230, 244, 0.85) 0 2px, transparent 3px),
-    radial-gradient(circle at 78% 18%, rgba(255, 239, 167, 0.9) 0 2px, transparent 3px),
-    linear-gradient(180deg, #a869a7 0%, #d885bd 49%, #f3bed6 50%, #f3bed6 100%);
+    radial-gradient(circle at 20% 28%, rgba(255, 229, 248, 0.9) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 18%, rgba(255, 244, 153, 0.9) 0 2px, transparent 3px),
+    linear-gradient(180deg, #c9eaff 0%, #f2d6ff 49%, #ffe1f4 50%, #ffe1f4 100%);
   box-shadow: none;
   pointer-events: none;
 }
@@ -972,16 +1898,15 @@ code {
   top: 11px;
   left: 50%;
   padding: 0.35rem 0.9rem;
-  border: 2px solid #792e61;
+  border: 2px solid var(--history-pink-deep);
   border-radius: 999px;
-  background: linear-gradient(#ffaccf, #e65d9e);
-  box-shadow: 2px 2px 0 #792e61;
+  background: linear-gradient(#ffb7e8, var(--history-pink));
+  box-shadow: 2px 2px 0 var(--history-pink-deep);
   color: #fff;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 0.92rem;
-  font-style: italic;
   font-weight: 700;
-  text-shadow: 1px 1px 0 #8b2c61;
+  text-shadow: 1px 1px 0 #7e38c6;
   transform: translateX(-50%);
 }
 
@@ -994,7 +1919,7 @@ code {
   color: #fff0a8;
   font-size: 0.9rem;
   letter-spacing: 0.12em;
-  text-shadow: 1px 1px 0 #a63b78;
+  text-shadow: 1px 1px 0 var(--history-pink-deep);
 }
 
 .calorie-history-page .park-diary-cloud {
@@ -1047,12 +1972,12 @@ code {
   height: 34px;
   opacity: 0.75;
   background:
-    linear-gradient(#67365f, #67365f) 4% 15px / 24px 19px,
-    linear-gradient(#67365f, #67365f) 10% 7px / 14px 27px,
-    linear-gradient(#67365f, #67365f) 17% 20px / 31px 14px,
-    linear-gradient(#67365f, #67365f) 73% 18px / 26px 16px,
-    linear-gradient(#67365f, #67365f) 80% 5px / 20px 29px,
-    linear-gradient(#67365f, #67365f) 88% 12px / 34px 22px;
+    linear-gradient(#9b7edc, #9b7edc) 4% 15px / 24px 19px,
+    linear-gradient(#9b7edc, #9b7edc) 10% 7px / 14px 27px,
+    linear-gradient(#9b7edc, #9b7edc) 17% 20px / 31px 14px,
+    linear-gradient(#9b7edc, #9b7edc) 73% 18px / 26px 16px,
+    linear-gradient(#9b7edc, #9b7edc) 80% 5px / 20px 29px,
+    linear-gradient(#9b7edc, #9b7edc) 88% 12px / 34px 22px;
   background-repeat: no-repeat;
 }
 
@@ -1062,13 +1987,13 @@ code {
   bottom: 29px;
   width: 72px;
   height: 72px;
-  border: 4px solid #6f3652;
+  border: 4px solid #9f70d9;
   border-radius: 48% 52% 45% 55%;
   background:
     radial-gradient(circle at 30% 28%, #ffd2e6 0 4px, transparent 5px),
-    radial-gradient(circle at 66% 22%, #ffb5d4 0 4px, transparent 5px),
-    radial-gradient(circle at 48% 58%, #f47bad 0 4px, transparent 5px), #c64e83;
-  box-shadow: inset -7px -8px 0 rgba(134, 39, 94, 0.28);
+    radial-gradient(circle at 66% 22%, #fff18f 0 4px, transparent 5px),
+    radial-gradient(circle at 48% 58%, #ff70c8 0 4px, transparent 5px), #caa7ff;
+  box-shadow: inset -7px -8px 0 rgba(126, 72, 191, 0.26);
 }
 
 .calorie-history-page .park-diary-tree::after {
@@ -1078,7 +2003,7 @@ code {
   left: 31px;
   width: 11px;
   height: 36px;
-  border: 3px solid #6f3652;
+  border: 3px solid #9f70d9;
   border-top: 0;
   background: #8e5947;
 }
@@ -1100,11 +2025,11 @@ code {
   bottom: 0;
   left: 0;
   height: 47px;
-  border-top: 3px solid #744463;
+  border-top: 3px solid #8bc9b0;
   background:
     radial-gradient(circle, #f5ca58 0 2px, transparent 3px) 10px 8px / 28px 18px,
     radial-gradient(circle, #f9a4bf 0 2px, transparent 3px) 2px 3px / 27px 20px,
-    linear-gradient(#4c866c, #2d6d59);
+    linear-gradient(#9df5cf, #77cfb0);
 }
 
 .calorie-history-page .park-diary-fountain {
@@ -1114,7 +2039,7 @@ code {
   left: 50%;
   width: 72px;
   height: 24px;
-  border: 3px solid #59415e;
+  border: 3px solid #5e9ec7;
   border-radius: 50%;
   background: #78cceb;
   box-shadow: inset 0 -7px 0 #4794c7;
@@ -1128,7 +2053,7 @@ code {
   left: 27px;
   width: 12px;
   height: 39px;
-  border: 3px solid #59415e;
+  border: 3px solid #5e9ec7;
   border-bottom: 0;
   border-radius: 55% 55% 0 0;
   background: #92e5fb;
@@ -1141,7 +2066,7 @@ code {
   height: 15px;
   background: #fff1a6;
   clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
-  filter: drop-shadow(1px 1px 0 #a23f78);
+  filter: drop-shadow(1px 1px 0 var(--history-pink-deep));
 }
 
 .calorie-history-page .park-diary-sparkle-one {
@@ -1155,71 +2080,13 @@ code {
   transform: scale(0.65);
 }
 
-.calorie-history-page .auth-bar,
-.calorie-history-page .card {
-  border: 2px solid var(--history-ink);
-  border-radius: 4px;
-  box-shadow: var(--history-shadow);
-}
-
 .calorie-history-page .auth-bar {
   padding: 0.7rem 0.85rem;
   background: var(--history-blue-soft);
 }
 
-.calorie-history-page .card {
-  position: relative;
-  overflow: hidden;
-  padding: 1.4rem;
-  background: var(--history-cream);
-}
-
-.calorie-history-page .card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 8px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--history-pink) 0 12px,
-    var(--history-lilac) 12px 24px,
-    var(--history-blue) 24px 36px
-  );
-}
-
-.calorie-history-page .card h2 {
-  position: relative;
-  margin-bottom: 1.15rem;
-  color: var(--history-pink-deep);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.45rem;
-  font-style: italic;
-}
-
-.calorie-history-page .segmented {
-  padding: 0.35rem;
-  border: 2px solid var(--history-ink);
-  border-radius: 4px;
-  background: var(--history-lilac-soft);
-  box-shadow: 3px 3px 0 rgba(77, 35, 80, 0.18);
-}
-
-.calorie-history-page label,
-.calorie-history-page .stat-label {
+.calorie-history-page label {
   color: var(--history-ink);
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.calorie-history-page input[type='date'] {
-  border: 2px inset #f4c4db;
-  border-radius: 2px;
-  background: #fff;
-  color: var(--history-ink);
-  font-size: 0.9rem;
 }
 
 .calorie-history-page input:focus-visible,
@@ -1229,144 +2096,9 @@ code {
   outline-offset: 3px;
 }
 
-.calorie-history-page .btn {
-  border: 2px solid var(--history-ink);
-  border-radius: 3px;
-  box-shadow: 2px 2px 0 var(--history-ink);
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease,
-    background-color 0.12s ease;
-}
-
-.calorie-history-page .btn:hover:not(:disabled) {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0 var(--history-ink);
-}
-
-.calorie-history-page .btn-primary {
-  background: linear-gradient(#fa9dcc, var(--history-pink));
-  color: #fff;
-}
-
-.calorie-history-page .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(#ffb4da, var(--history-pink-deep));
-}
-
-.calorie-history-page .btn-ghost {
-  background: var(--history-blue-soft);
-  color: var(--history-ink);
-}
-
-.calorie-history-page .btn-icon {
-  border-width: 1px;
-  box-shadow: none;
-  color: var(--history-pink-deep);
-  font-size: 0.68rem;
-}
-
-.calorie-history-page .btn-icon-neutral {
-  color: #346789;
-}
-
-.calorie-history-page .stats {
-  gap: 0.8rem;
-}
-
-.calorie-history-page .stat {
-  position: relative;
-  min-height: 88px;
-  overflow: hidden;
-  padding-right: 3.5rem;
-  border: 2px solid #d7b9e4;
-  border-radius: 3px;
-  background: var(--history-lilac-soft);
-  box-shadow: 2px 2px 0 rgba(117, 77, 125, 0.14);
-}
-
-.calorie-history-page .stat:nth-child(2n) {
-  border-color: #9fcde6;
-  background: var(--history-blue-soft);
-}
-
-.calorie-history-page .stat-accent {
-  border-color: var(--history-pink-deep) !important;
-  background: var(--history-pink-soft) !important;
-}
-
-.calorie-history-page .stat-value {
-  color: var(--history-pink-deep);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.6rem;
-}
-
-.calorie-history-page .stat::after {
-  position: absolute;
-  right: 0.65rem;
-  bottom: 0.55rem;
-  display: grid;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  border: 2px solid rgba(76, 35, 80, 0.72);
-  border-radius: 50%;
-  background: #fff4a9;
-  box-shadow: 1px 1px 0 rgba(76, 35, 80, 0.55);
-  color: #7c416a;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.calorie-history-page .stat-meals::after {
-  content: '♡';
-}
-
-.calorie-history-page .stat-calories::after {
-  content: '✦';
-  color: #c44880;
-}
-
-.calorie-history-page .stat-average::after {
-  content: '☼';
-  color: #bd832d;
-}
-
-.calorie-history-page .stat-protein::after {
-  content: '✿';
-  color: #b44674;
-}
-
-.calorie-history-page .stat-carbs::after {
-  content: '●';
-  color: #6eab70;
-}
-
-.calorie-history-page .stat-fat::after {
-  content: '✧';
-  color: #557eb3;
-}
-
-.calorie-history-page .chart-wrap {
-  border: 2px inset #f0bfd8;
-  border-radius: 3px;
-  background: #fffdfd;
-}
-
 .calorie-history-page .chart,
 .calorie-history-page #chart {
   display: block;
-}
-
-.calorie-history-page .empty-state,
-.calorie-history-page .status-msg {
-  border: 2px dashed var(--history-line);
-  border-radius: 3px;
-  background: var(--history-pink-soft);
-  color: var(--history-ink);
 }
 
 .calorie-history-page .day-block + .day-block {
@@ -1377,33 +2109,8 @@ code {
 
 .calorie-history-page .day-head h3 {
   color: var(--history-pink-deep);
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1.2rem;
-  font-style: italic;
-}
-
-.calorie-history-page .day-total {
-  padding: 0.25rem 0.5rem;
-  border: 1px solid #b9d5e4;
-  border-radius: 999px;
-  background: var(--history-blue-soft);
-  color: var(--history-ink);
-}
-
-.calorie-history-page table {
-  border: 2px solid #ddbdd3;
-  background: #fff;
-}
-
-.calorie-history-page th {
-  border-bottom: 2px solid #d898bd;
-  background: var(--history-pink-soft);
-  color: var(--history-pink-deep);
-  font-size: 0.68rem;
-}
-
-.calorie-history-page td {
-  border-bottom-color: #efd7e4;
 }
 
 .calorie-history-page tbody tr:nth-child(even) {
@@ -1417,54 +2124,6 @@ code {
 .calorie-history-page .app-footer {
   color: var(--history-ink);
   font-size: 0.74rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  .calorie-history-page {
-    --history-ink: #ffe4f3;
-    --history-muted: #d3b6cf;
-    --history-pink: #dd5b9a;
-    --history-pink-deep: #ff9dca;
-    --history-pink-soft: #4c2543;
-    --history-blue: #73c8ed;
-    --history-blue-soft: #213d52;
-    --history-lilac: #b89ae8;
-    --history-lilac-soft: #352b52;
-    --history-cream: #241d2a;
-    --history-line: #925b84;
-    --history-shadow: 4px 4px 0 rgba(0, 0, 0, 0.34);
-    --bg: #1a1620;
-    --surface: var(--history-cream);
-    --text: var(--history-ink);
-    --muted: var(--history-muted);
-    --border: var(--history-line);
-    --accent-bg: var(--history-pink-soft);
-  }
-
-  .calorie-history-page .app-header {
-    background:
-      linear-gradient(180deg, rgba(63, 35, 58, 0.96), rgba(55, 28, 52, 0.94)),
-      repeating-linear-gradient(135deg, transparent 0 12px, rgba(255, 255, 255, 0.05) 12px 14px);
-  }
-
-  .calorie-history-page .nav-link,
-  .calorie-history-page .segment,
-  .calorie-history-page input[type='date'],
-  .calorie-history-page table,
-  .calorie-history-page .chart-wrap {
-    background: #2d2434;
-    color: var(--history-ink);
-  }
-
-  .calorie-history-page .nav-link:hover,
-  .calorie-history-page .segment:hover,
-  .calorie-history-page tbody tr:hover {
-    background: var(--history-blue-soft);
-  }
-
-  .calorie-history-page tbody tr:nth-child(even) {
-    background: #29212f;
-  }
 }
 
 @media (max-width: 520px) {
@@ -1488,50 +2147,16 @@ code {
     max-width: calc(100% - 72px);
   }
 
-  .calorie-history-page .app-nav {
-    display: flex;
-    grid-template-columns: none;
-    width: calc(100% + 1.5rem);
-    margin-top: 0.55rem;
-    margin-right: -0.75rem;
-    margin-left: -0.75rem;
-    padding: 0.1rem 0.75rem 0.35rem;
-  }
-
-  .calorie-history-page .app-nav .nav-link {
-    flex: 0 0 51px;
-    min-height: 55px;
-  }
-
   .calorie-history-page .app-header::before,
   .calorie-history-page .app-header::after {
     font-size: 1.5rem;
-  }
-
-  .calorie-history-page .card {
-    padding: 1.15rem 1rem;
-  }
-
-  .calorie-history-page .segmented {
-    width: 100%;
-  }
-
-  .calorie-history-page .segment {
-    flex: 1;
-    text-align: center;
-  }
-
-  .calorie-history-page .day-total {
-    font-size: 0.74rem;
   }
 }
 
 @media (min-width: 820px) {
   .calorie-history-page .container {
-    max-width: calc(100% - 2rem);
     grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1.36fr) minmax(220px, 0.32fr);
     grid-template-rows: auto 378px minmax(180px, auto) minmax(180px, auto);
-    gap: 1.15rem;
     align-items: start;
   }
 
@@ -1540,36 +2165,6 @@ code {
     grid-row: 1;
     width: 100%;
     min-height: 0;
-  }
-
-  .calorie-history-page .container > .segmented .segment {
-    flex: 0 0 142px;
-    text-align: center;
-  }
-
-  .calorie-history-page .segmented {
-    justify-content: flex-start;
-    gap: 0.35rem;
-    padding-left: 0.8rem;
-  }
-
-  .calorie-history-page .segmented::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: 1.1rem;
-    width: 94px;
-    height: 46px;
-    border: 3px solid #782d5d;
-    border-radius: 7px;
-    background:
-      radial-gradient(circle at 29% 50%, #fff2ad 0 7px, #7d356b 8px 12px, transparent 13px),
-      radial-gradient(circle at 71% 50%, #fff2ad 0 7px, #7d356b 8px 12px, transparent 13px),
-      linear-gradient(135deg, #fba3cb, #e65799 62%, #b53b7a);
-    box-shadow:
-      3px 3px 0 rgba(86, 29, 66, 0.5),
-      inset 2px 2px 0 rgba(255, 230, 242, 0.65);
-    transform: translateY(-50%) rotate(3deg);
   }
 
   .calorie-history-page .filter-panel {
@@ -1677,12 +2272,6 @@ code {
   display: none;
 }
 
-.calorie-history-page .segmented {
-  min-height: 0;
-  padding: 0.35rem;
-  background: var(--history-lilac-soft);
-}
-
 .calorie-history-page .insight-panel h2 {
   font-size: 1.1rem;
 }
@@ -1709,7 +2298,7 @@ code {
 .calorie-history-page .insight-list dd {
   margin: 0.2rem 0 0;
   color: var(--history-pink-deep);
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 700;
 }
@@ -1734,7 +2323,7 @@ code {
   display: block;
   width: 0;
   height: 8px;
-  border-radius: 999px;
+  border-radius: 4px;
   background: var(--history-pink);
   box-shadow: 1px 1px 0 rgba(76, 35, 80, 0.38);
   transition: width 0.2s ease;
@@ -1780,48 +2369,5 @@ code {
 @media (max-width: 520px) {
   .calorie-history-page .app-header {
     min-height: 192px;
-  }
-}
-
-@media (min-width: 521px) {
-  .calorie-history-page .app-nav {
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-    left: auto;
-    width: calc(100% - 2rem);
-    gap: 0;
-    margin: 0;
-    transform: translateX(50%);
-  }
-
-  .calorie-history-page .app-nav .nav-link {
-    display: flex;
-    min-height: 48px;
-    align-items: center;
-    justify-content: center;
-    gap: 0.35rem;
-    border-radius: 6px 6px 0 0;
-    box-shadow:
-      inset 1px 1px 0 #fff5fa,
-      inset -1px 0 0 rgba(122, 32, 84, 0.22);
-  }
-
-  .calorie-history-page .app-nav .nav-link.is-active {
-    box-shadow:
-      inset 1px 1px 0 #d98bbe,
-      inset -1px 0 0 rgba(255, 219, 239, 0.18);
-  }
-
-  .calorie-history-page .app-nav .nav-icon {
-    width: 20px;
-    height: 20px;
-    border-radius: 5px;
-    font-size: 0.95rem;
-  }
-
-  .calorie-history-page .app-nav .nav-label {
-    font-size: 0.6rem;
-    white-space: nowrap;
   }
 }

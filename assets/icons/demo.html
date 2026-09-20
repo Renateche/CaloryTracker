@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Icon Library Gallery — Lifestyle Tracker</title>
+    <link rel="stylesheet" href="palette.css" />
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background: #eef2f7;
+        margin: 0;
+        padding: 2rem;
+      }
+      h1 {
+        margin: 0 0 0.25rem;
+      }
+      p.sub {
+        color: #555;
+        margin-top: 0;
+      }
+      .theme-section {
+        margin-bottom: 2.5rem;
+      }
+      .theme-section h2 {
+        border-bottom: 2px solid #333;
+        padding-bottom: 0.4rem;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+        gap: 0.75rem;
+      }
+      .cell {
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 0.6rem;
+        text-align: center;
+      }
+      .cell svg {
+        display: block;
+        margin: 0 auto 0.35rem;
+      }
+      .cell span {
+        font-size: 0.65rem;
+        color: #444;
+        word-break: break-word;
+      }
+      .theme-section:first-child {
+        background: #dcdcdc;
+      }
+      .theme-y2k {
+        background: #fff0f7;
+      }
+      .theme-geocities {
+        background: #1a0a2e;
+      }
+      .theme-geocities h2,
+      .theme-geocities .cell span {
+        color: #ffd6ec;
+      }
+      .theme-geocities .cell {
+        background: #2a1140;
+      }
+      .theme-pixelgame {
+        background: #101418;
+      }
+      .theme-pixelgame h2,
+      .theme-pixelgame .cell span {
+        color: #e6e6e6;
+      }
+      .theme-pixelgame .cell {
+        background: #1c2228;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Lifestyle Tracker — Pixel Icon Library</h1>
+    <p class="sub">
+      Windows 95 double-bevel base icons (real silver/white/black/navy Win95 palette), reskinned via
+      CSS variables into 3 alternate style variations (source geometry is shared).
+    </p>
+
+    <div id="sprite-holder"></div>
+
+    <div id="galleries"></div>
+
+    <script>
+      const icons = [
+        ['icon-mood-tracker', 'Mood tracker'],
+        ['icon-mood-happy', 'Happy mood'],
+        ['icon-mood-neutral', 'Neutral mood'],
+        ['icon-mood-sad', 'Sad mood'],
+        ['icon-energy-level', 'Energy level'],
+        ['icon-stress-level', 'Stress level'],
+        ['icon-mental-wellness', 'Mental wellness'],
+        ['icon-habit-tracker', 'Habit tracker'],
+        ['icon-daily-routine', 'Daily routine'],
+        ['icon-checklist', 'Checklist'],
+        ['icon-goal', 'Goal'],
+        ['icon-achievement', 'Achievement'],
+        ['icon-streak-counter', 'Streak counter'],
+        ['icon-calendar', 'Calendar'],
+        ['icon-reminder', 'Reminder'],
+        ['icon-progress-chart', 'Progress chart'],
+        ['icon-calories', 'Calories'],
+        ['icon-apple', 'Apple'],
+        ['icon-meal', 'Meal'],
+        ['icon-water-intake', 'Water intake'],
+        ['icon-nutrition', 'Nutrition'],
+        ['icon-weight-scale', 'Weight scale'],
+        ['icon-healthy-day-badge', 'Healthy day badge'],
+        ['icon-exercise', 'Exercise'],
+        ['icon-walking', 'Walking'],
+        ['icon-running', 'Running'],
+        ['icon-strength-training', 'Strength training'],
+        ['icon-activity-tracker', 'Activity tracker'],
+        ['icon-heart-rate', 'Heart rate'],
+        ['icon-sleep-tracker', 'Sleep tracker'],
+        ['icon-bed', 'Bed'],
+        ['icon-moon', 'Moon'],
+        ['icon-alarm-clock', 'Alarm clock'],
+        ['icon-sleep-score', 'Sleep score'],
+        ['icon-home', 'Home'],
+        ['icon-dashboard', 'Dashboard'],
+        ['icon-settings', 'Settings'],
+        ['icon-statistics', 'Statistics'],
+        ['icon-reports', 'Reports'],
+        ['icon-profile', 'Profile'],
+        ['icon-search', 'Search'],
+        ['icon-star', 'Star (decor)'],
+        ['icon-cloud', 'Cloud (decor)'],
+        ['icon-computer', 'Computer (decor)'],
+        ['icon-floppy-disk', 'Floppy disk (decor)'],
+        ['icon-coffee-cup', 'Coffee cup (decor)'],
+        ['icon-dialog-box', 'Dialog box (decor)'],
+        ['icon-status-indicator', 'Status indicator (decor)'],
+        ['icon-mascot', 'Mascot (decor)']
+      ];
+
+      const themes = [
+        ['', 'Windows 95 (default)'],
+        ['theme-y2k', 'Y2K Kawaii style'],
+        ['theme-geocities', 'GeoCities web style'],
+        ['theme-pixelgame', 'Extra-pixelated gaming style']
+      ];
+
+      fetch('sprite.svg')
+        .then((r) => r.text())
+        .then((svgText) => {
+          document.getElementById('sprite-holder').innerHTML = svgText;
+          const container = document.getElementById('galleries');
+          themes.forEach(([cls, label]) => {
+            const section = document.createElement('div');
+            section.className = 'theme-section ' + cls;
+            section.innerHTML = `<h2>${label}</h2><div class="grid"></div>`;
+            const grid = section.querySelector('.grid');
+            icons.forEach(([id, name]) => {
+              const cell = document.createElement('div');
+              cell.className = 'cell';
+              cell.innerHTML = `<svg class="icon-svg" viewBox="0 0 16 16" width="64" height="64"><use href="#${id}"></use></svg><span>${name}</span>`;
+              grid.appendChild(cell);
+            });
+            container.appendChild(section);
+          });
+        });
+    </script>
+  </body>
+</html>

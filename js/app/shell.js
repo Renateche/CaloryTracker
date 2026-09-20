@@ -7,10 +7,29 @@ import { NAV_ITEMS } from './trackers.js';
 import { AUTH_BAR_MARKUP, initAuthBar } from './auth-bar.js';
 import { escapeHtml } from '../lib/dom.js';
 
-const navMarkup = (active, retroIcons = false) =>
+const GLOSSY_ICON_PATH = 'assets/icons/glossy/';
+const PAGE_ICONS = {
+  dashboard: ['camera'],
+  calories: ['digital-pet'],
+  habits: ['gamepad'],
+  health: ['heart-status'],
+  mood: ['music-player', 'messenger']
+};
+const NAV_ICONS = {
+  dashboard: 'camera',
+  calories: 'digital-pet',
+  habits: 'gamepad',
+  health: 'heart-status',
+  exercise: 'exercise',
+  sleep: 'sleep',
+  water: 'water',
+  mood: 'music-player'
+};
+
+const navMarkup = (active) =>
   NAV_ITEMS.map(
     (item) =>
-      `<a href="${item.href}" class="nav-link${item.key === active ? ' is-active' : ''}" data-tracker="${escapeHtml(item.key)}">${retroIcons ? '<span class="nav-icon" aria-hidden="true"></span><span class="nav-label">' : ''}${escapeHtml(item.label)}${retroIcons ? '</span>' : ''}</a>`
+      `<a href="${item.href}" class="nav-link${item.key === active ? ' is-active' : ''}" data-tracker="${escapeHtml(item.key)}"><span class="nav-icon" aria-hidden="true"><img src="${GLOSSY_ICON_PATH}${NAV_ICONS[item.key]}.svg" alt="" /></span><span class="nav-label">${escapeHtml(item.label)}</span></a>`
   ).join('');
 
 /**
@@ -22,26 +41,30 @@ const navMarkup = (active, retroIcons = false) =>
  */
 export const initShell = async ({ title, subtitle = '', active, onUser = () => {} }) => {
   const suffix = 'Lifestyle Tracker';
-  const isRetroHistory = document.body.classList.contains('calorie-history-page');
   document.title = title === suffix ? title : `${title} · ${suffix}`;
 
   const header = document.querySelector('.app-header');
   if (header) {
+    const icons = (PAGE_ICONS[active] ?? [])
+      .map(
+        (icon) =>
+          `<img class="page-icon" src="${GLOSSY_ICON_PATH}${icon}.svg" alt="" aria-hidden="true" />`
+      )
+      .join('');
     header.innerHTML = `
-      <h1>${escapeHtml(title)}</h1>
+      <div class="page-title"><h1>${escapeHtml(title)}</h1>${icons ? `<div class="page-icons">${icons}</div>` : ''}</div>
       ${subtitle ? `<p class="subtitle">${escapeHtml(subtitle)}</p>` : ''}
-      <nav class="app-nav" aria-label="Trackers">${navMarkup(active, isRetroHistory)}</nav>
-      ${isRetroHistory ? AUTH_BAR_MARKUP : ''}`;
+      <nav class="app-nav" aria-label="Trackers">${navMarkup(active)}</nav>
+      ${AUTH_BAR_MARKUP}`;
   }
 
   const container = document.querySelector('.container');
-  if (isRetroHistory && header && container) {
+  if (header && container) {
     const parkBanner = container.querySelector('.park-diary-banner');
     if (parkBanner) header.prepend(parkBanner);
-  }
-
-  if (container && !isRetroHistory) {
-    container.insertAdjacentHTML('afterbegin', AUTH_BAR_MARKUP);
+    // Pages declare their decorative motif in <main> and it's relocated into the header.
+    const scene = container.querySelector('.page-scene');
+    if (scene) header.prepend(scene);
   }
 
   await initAuthBar(onUser);

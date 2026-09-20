@@ -1,0 +1,450 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+<defs>
+  <!-- Shared glossy round badge (MSN-butterfly style): soft drop shadow, circular
+       gradient face, glass highlight sheen, thin outline ring. Recolors per theme
+       via CSS vars. Glyphs are drawn on top with rounded corners on a 16x16 grid. -->
+  <radialGradient id="badge-face-grad" cx="32%" cy="26%" r="80%">
+    <stop offset="0%" style="stop-color:var(--icon-c1-light, var(--icon-c1));stop-opacity:1"/>
+    <stop offset="60%" style="stop-color:var(--icon-c1);stop-opacity:1"/>
+    <stop offset="100%" style="stop-color:var(--icon-bevel-sh);stop-opacity:1"/>
+  </radialGradient>
+  <radialGradient id="badge-sheen" cx="34%" cy="22%" r="55%">
+    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.95"/>
+    <stop offset="45%" style="stop-color:#ffffff;stop-opacity:0.35"/>
+    <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+  </radialGradient>
+  <symbol id="badge-base" viewBox="0 0 16 16">
+    <circle cx="8" cy="8.6" r="7" fill="var(--icon-sh)" opacity="0.35"/>
+    <circle cx="8" cy="8" r="7" fill="url(#badge-face-grad)" stroke="var(--icon-ink)" stroke-width="0.6"/>
+    <circle cx="8" cy="7.5" r="6.3" fill="url(#badge-sheen)"/>
+    <circle cx="8" cy="8" r="7" fill="none" stroke="var(--icon-hi)" stroke-width="0.4" opacity="0.6"/>
+
+  </symbol>
+</defs>
+
+<!-- ===================== Health & Lifestyle ===================== -->
+<symbol id="icon-mood-tracker" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="6" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="6" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="9" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="7" y="10" width="2" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="9" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="11" y="3" width="1" height="1" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-mood-happy" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="6" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="6" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="9" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="10" width="3" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="9" width="1" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-mood-neutral" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="6" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="6" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="10" width="5" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-mood-sad" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="6" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="6" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="10" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="9" width="3" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="10" width="1" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-energy-level" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="9" y="3" width="2" height="3" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="7" y="6" width="3" height="2" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="6" y="8" width="2" height="3" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="8" y="11" width="2" height="2" fill="var(--icon-warn)"/>
+</symbol>
+
+<symbol id="icon-stress-level" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="11" width="8" height="1" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="7" y="5" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="8" y="6" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="7" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="10" y="8" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="11" y="9" width="2" height="2" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-mental-wellness" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="6" y="4" width="4" height="4" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="7" y="6" width="1" height="1" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="9" y="6" width="1" height="1" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="4" y="3" width="1" height="1" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="11" y="3" width="1" height="1" fill="var(--icon-warn)"/>
+</symbol>
+
+<!-- ===================== Habits & Productivity ===================== -->
+<symbol id="icon-habit-tracker" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="5" width="6" height="6" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="5" y="7" width="6" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="8" y="5" width="1" height="6" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="9" width="1" height="1" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-daily-routine" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="6" y="5" width="4" height="4" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="8" y="6" width="1" height="2" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="8" y="7" width="2" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="4" width="1" height="1" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="10" y="4" width="1" height="1" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-checklist" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="4" width="6" height="8" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="7" y="3" width="2" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="6" width="4" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="8" width="4" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="10" width="4" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="6" width="1" height="1" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="5" y="8" width="1" height="1" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="5" y="10" width="1" height="1" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-goal" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="4" width="8" height="8" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="6" y="6" width="4" height="4" fill="var(--icon-c1)"/>
+  <rect rx="1" ry="1" x="7" y="7" width="2" height="2" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-achievement" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="4" width="1" height="2" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="10" y="4" width="1" height="2" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="6" y="4" width="4" height="3" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="7" y="7" width="2" height="2" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="6" y="9" width="4" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-streak-counter" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="7" y="4" width="2" height="2" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="6" y="6" width="4" height="2" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="6" y="8" width="4" height="3" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="7" y="8" width="2" height="3" fill="var(--icon-warn)"/>
+</symbol>
+
+<symbol id="icon-calendar" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="6" width="8" height="6" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="4" y="4" width="8" height="2" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="5" y="3" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="10" y="3" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="8" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="7" y="8" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="8" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="10" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="7" y="10" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="10" width="1" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-reminder" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="7" y="3" width="2" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="4" width="4" height="5" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="5" y="9" width="6" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="7" y="10" width="2" height="1" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-progress-chart" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="12" width="9" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="9" width="2" height="3" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="8" y="7" width="2" height="5" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="11" y="5" width="2" height="7" fill="var(--icon-accent)"/>
+</symbol>
+
+<!-- ===================== Nutrition ===================== -->
+<symbol id="icon-calories" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="7" y="4" width="2" height="2" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="6" y="6" width="4" height="2" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="6" y="8" width="4" height="3" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="7" y="7" width="2" height="3" fill="var(--icon-warn)"/>
+</symbol>
+
+<symbol id="icon-apple" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="7" width="6" height="4" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="6" y="6" width="4" height="1" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="9" y="4" width="2" height="1" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="8" y="4" width="1" height="2" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-meal" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="8" width="8" height="3" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="6" y="6" width="2" height="2" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="9" y="6" width="2" height="2" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="7" y="5" width="2" height="1" fill="var(--icon-warn)"/>
+</symbol>
+
+<symbol id="icon-water-intake" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="7" y="5" width="2" height="1" fill="var(--icon-c4)"/>
+  <rect rx="1" ry="1" x="6" y="6" width="4" height="2" fill="var(--icon-c4)"/>
+  <rect rx="1" ry="1" x="6" y="8" width="4" height="2" fill="var(--icon-c4)"/>
+  <rect rx="1" ry="1" x="7" y="10" width="2" height="1" fill="var(--icon-c4)"/>
+  <rect rx="1" ry="1" x="7" y="7" width="1" height="1" fill="var(--icon-hi)"/>
+</symbol>
+
+<symbol id="icon-nutrition" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="4" width="4" height="4" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="8" y="4" width="4" height="4" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="4" y="8" width="4" height="4" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="8" y="8" width="4" height="4" fill="var(--icon-warn)"/>
+</symbol>
+
+<symbol id="icon-weight-scale" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="10" width="8" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="7" y="8" width="2" height="2" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="4" width="6" height="3" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="7" y="5" width="2" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-healthy-day-badge" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="4" width="6" height="6" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="7" y="8" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="8" y="9" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="7" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="10" width="1" height="3" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="9" y="10" width="1" height="3" fill="var(--icon-accent)"/>
+</symbol>
+
+<!-- ===================== Fitness ===================== -->
+<symbol id="icon-exercise" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="7" width="6" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="4" y="5" width="2" height="6" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="10" y="5" width="2" height="6" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-walking" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="6" y="5" width="2" height="3" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="9" y="9" width="2" height="3" fill="var(--icon-c3)"/>
+</symbol>
+
+<symbol id="icon-running" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="7" y="5" width="2" height="3" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="5" y="10" width="2" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="9" y="10" width="2" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="5" y="6" width="2" height="1" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="9" y="6" width="2" height="1" fill="var(--icon-c3)"/>
+</symbol>
+
+<symbol id="icon-strength-training" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="3" y="7" width="10" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="2" y="5" width="2" height="6" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="12" y="5" width="2" height="6" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-activity-tracker" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="3" y="7" width="2" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="11" y="7" width="2" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="6" y="5" width="4" height="6" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="8" y="8" width="1" height="1" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-heart-rate" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="5" width="2" height="2" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="9" y="5" width="2" height="2" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="6" y="6" width="4" height="3" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="4" y="9" width="2" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="7" width="1" height="3" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="7" y="9" width="2" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="7" width="1" height="3" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="11" y="9" width="2" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<!-- ===================== Sleep ===================== -->
+<symbol id="icon-sleep-tracker" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="9" width="8" height="3" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="4" y="7" width="1" height="5" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="10" y="4" width="1" height="1" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="11" y="3" width="1" height="1" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="12" y="2" width="1" height="1" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-bed" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="8" width="8" height="4" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="5" y="7" width="3" height="2" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="4" y="6" width="1" height="6" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-moon" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="6" y="4" width="6" height="6" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="8" y="3" width="6" height="6" fill="var(--icon-c1)"/>
+</symbol>
+
+<symbol id="icon-alarm-clock" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="4" width="1" height="1" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="10" y="4" width="1" height="1" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="6" y="5" width="4" height="4" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="6" y="9" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="9" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="8" y="6" width="1" height="2" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="8" y="7" width="2" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-sleep-score" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="4" width="4" height="4" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="6" y="3" width="4" height="4" fill="var(--icon-c1)"/>
+  <rect rx="1" ry="1" x="10" y="9" width="1" height="1" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="11" y="10" width="1" height="1" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="12" y="9" width="1" height="1" fill="var(--icon-warn)"/>
+</symbol>
+
+<!-- ===================== Navigation ===================== -->
+<symbol id="icon-home" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="6" y="4" width="4" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="5" width="6" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="4" y="6" width="8" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="7" width="6" height="5" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="7" y="9" width="2" height="3" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-dashboard" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="5" width="3" height="3" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="9" y="5" width="3" height="3" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="5" y="9" width="3" height="3" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="9" y="9" width="3" height="3" fill="var(--icon-warn)"/>
+</symbol>
+
+<symbol id="icon-settings" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="7" y="7" width="2" height="2" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="7" y="4" width="2" height="1" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="7" y="11" width="2" height="1" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="4" y="7" width="1" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="11" y="7" width="1" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="5" y="5" width="1" height="1" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="10" y="5" width="1" height="1" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="5" y="10" width="1" height="1" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="10" y="10" width="1" height="1" fill="var(--icon-c3)"/>
+</symbol>
+
+<symbol id="icon-statistics" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="12" width="9" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="5" y="9" width="2" height="3" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="8" y="7" width="2" height="5" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="11" y="5" width="2" height="7" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-reports" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="4" width="6" height="9" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="5" y="4" width="6" height="2" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="6" y="7" width="4" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="9" width="4" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="11" width="4" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-profile" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="7" y="5" width="2" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="5" y="8" width="6" height="4" fill="var(--icon-c3)"/>
+</symbol>
+
+<symbol id="icon-search" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="5" width="5" height="5" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="6" y="6" width="3" height="3" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="10" y="10" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="11" y="11" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="12" y="12" width="1" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<!-- ===================== Bonus decorative (single style) ===================== -->
+<symbol id="icon-star" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="7" y="7" width="2" height="2" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="7" y="3" width="2" height="3" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="7" y="10" width="2" height="3" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="3" y="7" width="3" height="2" fill="var(--icon-warn)"/>
+  <rect rx="1" ry="1" x="10" y="7" width="3" height="2" fill="var(--icon-warn)"/>
+</symbol>
+
+<symbol id="icon-cloud" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="7" width="8" height="3" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="6" y="5" width="3" height="3" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="9" y="6" width="3" height="3" fill="var(--icon-c2)"/>
+</symbol>
+
+<symbol id="icon-computer" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="5" y="4" width="6" height="5" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="6" y="5" width="4" height="3" fill="var(--icon-c4)"/>
+  <rect rx="1" ry="1" x="6" y="9" width="4" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="7" y="10" width="2" height="2" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="4" y="12" width="8" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-floppy-disk" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="4" width="8" height="8" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="6" y="4" width="4" height="3" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="5" y="8" width="6" height="3" fill="var(--icon-c1)"/>
+</symbol>
+
+<symbol id="icon-coffee-cup" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="6" y="6" width="4" height="5" fill="var(--icon-c3)"/>
+  <rect rx="1" ry="1" x="10" y="7" width="1" height="3" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="7" y="4" width="1" height="1" fill="var(--icon-c4)"/>
+  <rect rx="1" ry="1" x="9" y="4" width="1" height="1" fill="var(--icon-c4)"/>
+</symbol>
+
+<symbol id="icon-dialog-box" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="4" y="4" width="8" height="7" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="4" y="4" width="8" height="2" fill="var(--icon-accent)"/>
+  <rect rx="1" ry="1" x="11" y="4" width="1" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+<symbol id="icon-status-indicator" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="6" y="6" width="4" height="4" fill="var(--icon-c2)" opacity="0.5"/>
+  <rect rx="1" ry="1" x="7" y="7" width="2" height="2" fill="var(--icon-accent)"/>
+</symbol>
+
+<symbol id="icon-mascot" viewBox="0 0 16 16">
+  <use href="#badge-base"/>
+  <rect rx="1" ry="1" x="6" y="6" width="4" height="5" fill="var(--icon-c2)"/>
+  <rect rx="1" ry="1" x="7" y="7" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="9" y="7" width="1" height="1" fill="var(--icon-ink)"/>
+  <rect rx="1" ry="1" x="7" y="9" width="2" height="1" fill="var(--icon-ink)"/>
+</symbol>
+
+</svg>

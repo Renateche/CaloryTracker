@@ -7,11 +7,16 @@
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body>
+  <body class="dashboard-page">
     <header class="app-header"></header>
 
     <main class="container">
-      <section class="card" id="signed-out-intro" hidden>
+      <span class="page-scene" aria-hidden="true">
+        <span class="scene-cloud scene-pos-tl"></span>
+        <span class="scene-cloud scene-pos-tr"></span>
+        <span class="scene-ground"></span>
+      </span>
+      <section class="card intro-panel" id="signed-out-intro" hidden>
         <h2>Track your day, all in one place</h2>
         <p class="lede">
           Log meals, habits, workouts, sleep, water and mood. Everything is private to your account
@@ -19,14 +24,17 @@
         </p>
       </section>
 
-      <section class="card">
+      <section class="card today-panel">
         <div class="card-head">
           <h2>Today</h2>
           <span class="day-total" id="dashboard-date"></span>
         </div>
         <p id="dashboard-status" class="empty-state" hidden></p>
-        <div class="tile-grid" id="tiles"></div>
       </section>
+
+      <div class="tile-stack-panel">
+        <div class="tile-grid" id="tiles"></div>
+      </div>
     </main>
 
     <footer class="app-footer">

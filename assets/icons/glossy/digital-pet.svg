@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Digital pet">
+  <defs>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+      <feOffset dy="6" result="offset"/>
+      <feColorMatrix in="offset" values="0 0 0 0 0.18 0 0 0 0 0.16 0 0 0 0 0.32 0 0 0 .3 0"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff"/><stop offset=".2" stop-color="#bed2ed"/>
+      <stop offset=".48" stop-color="#fff"/><stop offset=".72" stop-color="#8496bc"/>
+      <stop offset="1" stop-color="#f7fbff"/>
+    </linearGradient>
+    <radialGradient id="pink" cx="30%" cy="20%" r="90%">
+      <stop stop-color="#ffd9ef"/><stop offset=".55" stop-color="#ff82bf"/><stop offset="1" stop-color="#d33f91"/>
+    </radialGradient>
+    <radialGradient id="blue" cx="28%" cy="18%" r="90%">
+      <stop stop-color="#e0fbff"/><stop offset=".5" stop-color="#7de4f2"/><stop offset="1" stop-color="#3899cf"/>
+    </radialGradient>
+    <radialGradient id="lime" cx="28%" cy="18%" r="90%">
+      <stop stop-color="#f1ffd8"/><stop offset=".52" stop-color="#b9ef72"/><stop offset="1" stop-color="#65b974"/>
+    </radialGradient>
+    <radialGradient id="violet" cx="28%" cy="18%" r="90%">
+      <stop stop-color="#f3e4ff"/><stop offset=".5" stop-color="#c89bf3"/><stop offset="1" stop-color="#795bc8"/>
+    </radialGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#eaffd9"/><stop offset="1" stop-color="#86cab1"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#fff" stop-opacity=".9"/><stop offset=".48" stop-color="#fff" stop-opacity=".2"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <symbol id="orb" viewBox="0 0 128 128">
+      <circle cx="64" cy="63" r="53" fill="url(#chrome)" stroke="#455174" stroke-width="3"/>
+      <circle cx="64" cy="63" r="47" fill="var(--orb-fill, url(#pink))" stroke="#fff" stroke-opacity=".75" stroke-width="2"/>
+      <ellipse cx="49" cy="39" rx="28" ry="18" fill="url(#glass)" opacity=".8"/>
+      <path d="M28 92c17 19 53 24 76-2" fill="none" stroke="#702d70" stroke-opacity=".24" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="38" cy="29" r="5" fill="#fff" opacity=".9"/>
+    </symbol>
+
+    <symbol id="icon-messenger" viewBox="0 0 128 128">
+      <g filter="url(#shadow)"><use href="#orb" style="--orb-fill:url(#blue)"/>
+        <circle cx="76" cy="45" r="15" fill="#72d8f2" stroke="#344d79" stroke-width="3"/>
+        <path d="M51 83c1-18 11-28 25-28s25 10 26 28c-12 10-39 10-51 0Z" fill="#55bce9" stroke="#344d79" stroke-width="3"/>
+        <circle cx="52" cy="57" r="12" fill="#b8ef77" stroke="#344d79" stroke-width="3"/>
+        <path d="M32 86c1-14 8-22 20-22 9 0 16 5 19 15-10 10-27 13-39 7Z" fill="#94d95e" stroke="#344d79" stroke-width="3"/>
+        <path d="M68 33c7-5 16-3 20 3" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".75"/>
+      </g>
+    </symbol>
+
+    <symbol id="icon-desktop" viewBox="0 0 128 128">
+      <g filter="url(#shadow)"><use href="#orb" style="--orb-fill:url(#violet)"/>
+        <rect x="31" y="31" width="67" height="50" rx="12" fill="url(#chrome)" stroke="#41476a" stroke-width="3"/>
+        <rect x="38" y="38" width="53" height="34" rx="7" fill="#9ee9ee" stroke="#5e5d87" stroke-width="2"/>
+        <path d="M42 42h45v12c-16-5-29-4-45 2Z" fill="#fff" opacity=".45"/>
+        <circle cx="58" cy="55" r="2.5" fill="#3e4569"/><circle cx="72" cy="55" r="2.5" fill="#3e4569"/>
+        <path d="M59 62q6 6 12 0" fill="none" stroke="#3e4569" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M57 81v9m16-9v9M47 93h36" stroke="#4d5276" stroke-width="5" stroke-linecap="round"/>
+      </g>
+    </symbol>
+
+    <symbol id="icon-flip-phone" viewBox="0 0 128 128">
+      <g filter="url(#shadow)"><use href="#orb" style="--orb-fill:url(#pink)"/>
+        <g transform="rotate(8 64 64)"><rect x="47" y="25" width="35" height="43" rx="9" fill="url(#chrome)" stroke="#4c456d" stroke-width="3"/>
+          <rect x="53" y="32" width="23" height="24" rx="4" fill="#98dfec"/><path d="M56 35h17v7c-7-2-11-2-17 1Z" fill="#fff" opacity=".55"/>
+          <path d="M48 69h34l6 28q1 9-8 10H50q-9-1-7-10Z" fill="url(#violet)" stroke="#4c456d" stroke-width="3"/>
+          <circle cx="65" cy="79" r="6" fill="url(#chrome)" stroke="#4c456d" stroke-width="2"/>
+          <g fill="#fff" opacity=".8"><circle cx="53" cy="91" r="2"/><circle cx="64" cy="91" r="2"/><circle cx="75" cy="91" r="2"/><circle cx="53" cy="99" r="2"/><circle cx="64" cy="99" r="2"/><circle cx="75" cy="99" r="2"/></g>
+        </g>
+      </g>
+    </symbol>
+
+    <symbol id="icon-digital-pet" viewBox="0 0 128 128">
+      <g filter="url(#shadow)"><use href="#orb" style="--orb-fill:url(#lime)"/>
+        <path d="M64 24c24 0 37 19 35 44-2 27-14 39-35 39S31 95 29 68c-2-25 11-44 35-44Z" fill="url(#pink)" stroke="#51415f" stroke-width="3"/>
+        <path d="M43 38c10-8 29-10 41-1" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".65"/>
+        <rect x="42" y="43" width="44" height="37" rx="7" fill="url(#chrome)" stroke="#51415f" stroke-width="3"/>
+        <rect x="48" y="49" width="32" height="25" rx="3" fill="url(#screen)"/>
+        <path d="M57 59h3v-3h8v3h3v8h-3v3h-8v-3h-3Z" fill="#47736b"/><rect x="61" y="59" width="2" height="2" fill="#dfffb5"/>
+        <g fill="#6f4777" stroke="#fff" stroke-width="1"><circle cx="51" cy="91" r="5"/><circle cx="65" cy="94" r="5"/><circle cx="79" cy="91" r="5"/></g>
+      </g>
+    </symbol>
+
+    <symbol id="icon-music-player" viewBox="0 0 128 128">
+      <g filter="url(#shadow)"><use href="#orb" style="--orb-fill:url(#blue)"/>
+        <rect x="37" y="24" width="54" height="82" rx="15" fill="url(#pink)" stroke="#4a486c" stroke-width="3"/>
+        <path d="M45 31c10-6 28-7 39 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+        <rect x="45" y="39" width="38" height="25" rx="5" fill="url(#screen)" stroke="#665a7c" stroke-width="2"/>
+        <path d="M57 55V45l11-3v10" fill="none" stroke="#47736b" stroke-width="3" stroke-linecap="round"/><circle cx="54" cy="56" r="4" fill="#47736b"/><circle cx="68" cy="53" r="4" fill="#47736b"/>
+        <circle cx="64" cy="83" r="15" fill="url(#chrome)" stroke="#665a7c" stroke-width="2"/><circle cx="64" cy="83" r="5" fill="#fff" stroke="#665a7c"/>
+      </g>
+    </symbol>
+
+    <symbol id="icon-camera" viewBox="0 0 128 128">
+      <g filter="url(#shadow)"><use href="#orb" style="--orb-fill:url(#violet)"/>
+        <path d="M29 45q0-10 10-10h50q10 0 10 10v43q0 10-10 10H39q-10 0-10-10Z" fill="url(#pink)" stroke="#454664" stroke-width="3"/>
+        <path d="M36 41c15-6 41-6 56 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".65"/>
+        <circle cx="66" cy="65" r="20" fill="url(#chrome)" stroke="#454664" stroke-width="3"/><circle cx="66" cy="65" r="13" fill="#6a80b7"/><circle cx="62" cy="60" r="6" fill="#bdefff"/><circle cx="58" cy="56" r="3" fill="#fff"/>
+        <rect x="38" y="43" width="13" height="9" rx="3" fill="#eaffd9" stroke="#454664" stroke-width="2"/><circle cx="88" cy="48" r="5" fill="#ffda67" stroke="#454664" stroke-width="2"/>
+        <path d="M48 98h34l-5 15H53Z" fill="#fff" stroke="#454664" stroke-width="3"/><path d="M56 104h18" stroke="#ff82bf" stroke-width="3"/>
+      </g>
+    </symbol>
+
+    <symbol id="icon-gamepad" viewBox="0 0 128 128">
+      <g filter="url(#shadow)"><use href="#orb" style="--orb-fill:url(#lime)"/>
+        <path d="M32 61q4-22 22-22h20q18 0 22 22l8 27q3 13-8 17-8 3-16-10l-6-10H54l-6 10q-8 13-16 10-11-4-8-17Z" fill="url(#violet)" stroke="#41476a" stroke-width="3"/>
+        <path d="M39 57c10-10 39-14 50 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+        <path d="M43 61v18M34 70h18" stroke="#41476a" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="82" cy="64" r="5" fill="#ff77ad" stroke="#41476a" stroke-width="2"/><circle cx="91" cy="76" r="5" fill="#66d9e8" stroke="#41476a" stroke-width="2"/><circle cx="76" cy="78" r="5" fill="#ffe36b" stroke="#41476a" stroke-width="2"/>
+      </g>
+    </symbol>
+
+    <symbol id="icon-floppy" viewBox="0 0 128 128">
+      <g filter="url(#shadow)"><use href="#orb" style="--orb-fill:url(#blue)"/>
+        <path d="M34 28h55l9 10v62H30V32q0-4 4-4Z" fill="url(#violet)" stroke="#41476a" stroke-width="3"/>
+        <path d="M39 34h42v27H39Z" fill="url(#chrome)" stroke="#41476a" stroke-width="2"/><path d="M68 35h9v21h-9Z" fill="#7583a7"/>
+        <rect x="42" y="72" width="44" height="29" rx="4" fill="#fff" stroke="#41476a" stroke-width="2"/>
+        <path d="M49 80h30M49 87h22" stroke="#ff82bf" stroke-width="3" stroke-linecap="round"/>
+        <path d="M39 31c10-3 29-3 38 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".65"/>
+      </g>
+    </symbol>
+
+    <symbol id="icon-heart-status" viewBox="0 0 128 128">
+      <g filter="url(#shadow)"><use href="#orb" style="--orb-fill:url(#pink)"/>
+        <path d="M64 96 35 68C16 48 44 28 64 48c20-20 48 0 29 20Z" fill="#ff5b9e" stroke="#683b67" stroke-width="4"/>
+        <path d="M39 48c8-9 19-6 23 1" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".75"/>
+        <path d="M44 70h12l5-12 8 25 6-13h12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </symbol>
+  </defs>
+  <use href="#icon-digital-pet"/>
+</svg>
