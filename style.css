@@ -2371,3 +2371,145 @@ code {
     min-height: 192px;
   }
 }
+
+/* ---------- Desktop pet avatar ---------- */
+.page-pet {
+  --pet-x: 0px;
+  --pet-y: 0px;
+  --pet-facing: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 86px;
+  height: 102px;
+  z-index: 60;
+  transform: translate(var(--pet-x), var(--pet-y));
+  pointer-events: none;
+}
+
+.pet-shadow {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 56px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(28, 37, 54, 0.18);
+  transform: translateX(-50%);
+}
+
+.pet-body {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: 86px;
+  height: 86px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  transform: translateX(-50%) scaleX(var(--pet-facing));
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.page-pet.is-dragged .pet-body {
+  cursor: grabbing;
+}
+
+.pet-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.is-bounce .pet-body {
+  animation: pet-bounce 0.35s ease-in-out;
+}
+
+.is-blinking .pet-image {
+  transform: scaleY(0.98);
+}
+
+@keyframes pet-bounce {
+  0% {
+    transform: translateX(-50%) scaleX(var(--pet-facing)) translateY(0);
+  }
+  40% {
+    transform: translateX(-50%) scaleX(var(--pet-facing)) translateY(-10px);
+  }
+  100% {
+    transform: translateX(-50%) scaleX(var(--pet-facing)) translateY(0);
+  }
+}
+
+.pet-speech {
+  --speech-shift-x: 0px;
+  --speech-shift-y: 0px;
+  --speech-pointer-shift-x: 0px;
+  position: absolute;
+  bottom: 98px;
+  left: calc(50% + 22px);
+  translate: var(--speech-shift-x) var(--speech-shift-y);
+  transform: translateX(-50%);
+  max-width: 140px;
+  padding: 0.35rem 0.6rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  animation: pet-speech-pop 0.2s ease-out;
+}
+
+.pet-speech.is-below {
+  top: 98px;
+  bottom: auto;
+}
+
+.pet-speech::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: calc(50% - 22px + var(--speech-pointer-shift-x));
+  width: 8px;
+  height: 8px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  transform: translateX(-50%) rotate(45deg) translateY(-4px);
+}
+
+.pet-speech.is-below::after {
+  top: auto;
+  bottom: 100%;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  transform: translateX(-50%) rotate(45deg) translateY(4px);
+}
+
+@keyframes pet-speech-pop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-bounce .pet-body {
+    animation: none;
+  }
+}

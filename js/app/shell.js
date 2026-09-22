@@ -6,6 +6,7 @@
 import { NAV_ITEMS } from './trackers.js';
 import { AUTH_BAR_MARKUP, initAuthBar } from './auth-bar.js';
 import { escapeHtml } from '../lib/dom.js';
+import { mountAvatar, setAvatarMood } from './avatar.js';
 
 const GLOSSY_ICON_PATH = 'assets/icons/glossy/';
 const PAGE_ICONS = {
@@ -67,5 +68,9 @@ export const initShell = async ({ title, subtitle = '', active, onUser = () => {
     if (scene) header.prepend(scene);
   }
 
-  await initAuthBar(onUser);
+  mountAvatar(active);
+  await initAuthBar((user) => {
+    onUser(user);
+    setAvatarMood(user, active);
+  });
 };
